@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function HomePage() {
@@ -23,9 +24,17 @@ export default function HomePage() {
         </div>
       </header>
 
-      <section className="ocean-wash relative flex min-h-[100svh] flex-col justify-end overflow-hidden px-6 pb-16 pt-28 md:px-10 md:pb-20">
-        <div className="grain pointer-events-none absolute inset-0 opacity-40" />
-        <div className="animate-drift pointer-events-none absolute -right-16 top-24 h-64 w-64 rounded-full bg-foam/10 blur-2xl md:h-96 md:w-96" />
+      <section className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden px-6 pb-16 pt-28 md:px-10 md:pb-20">
+        <Image
+          src="/redhan.jpeg"
+          alt="Bioluminescent Maldivian shoreline at night — Meckvy cover"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/35 to-ink/25" />
+        <div className="grain pointer-events-none absolute inset-0 opacity-25" />
         <div className="relative z-10 mx-auto w-full max-w-5xl">
           <p className="animate-fade-up font-[family-name:var(--font-display)] text-5xl font-semibold tracking-tight text-foam sm:text-6xl md:text-7xl lg:text-8xl">
             Meckvy
