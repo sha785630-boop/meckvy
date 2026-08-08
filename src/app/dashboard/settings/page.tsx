@@ -152,6 +152,51 @@ export default function SettingsPage() {
 
       {goLive && (
         <section className="mb-6 rounded-2xl border border-line bg-foam p-6">
+          <h2 className="text-lg font-semibold text-ink">Website widget</h2>
+          <p className="mt-2 text-sm text-ink-soft">
+            Put this on the guesthouse website. Guest messages land in your
+            Meckvy inbox.
+          </p>
+          <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-ink-soft">
+            Direct page link
+          </p>
+          <code className="mt-1 block break-all rounded-xl bg-sand px-3 py-2 text-xs text-ink">
+            {origin}/widget/{goLive.guesthouseId}
+          </code>
+          <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-ink-soft">
+            Paste this before &lt;/body&gt; on their website
+          </p>
+          <pre className="mt-1 overflow-x-auto rounded-xl bg-ink px-3 py-3 text-[11px] leading-relaxed text-foam">
+{`<script
+  src="${origin}/embed.js"
+  data-guesthouse="${goLive.guesthouseId}"
+  data-base="${origin}"
+  async
+></script>`}
+          </pre>
+          <p className="mt-3 text-xs text-ink-soft">
+            Or embed with iframe:
+          </p>
+          <pre className="mt-1 overflow-x-auto rounded-xl bg-ink px-3 py-3 text-[11px] leading-relaxed text-foam">
+{`<iframe
+  src="${origin}/widget/${goLive.guesthouseId}?embed=1"
+  title="Contact"
+  style="width:100%;height:560px;border:0;border-radius:16px;"
+></iframe>`}
+          </pre>
+          <a
+            href={`/widget/${goLive.guesthouseId}`}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-4 inline-flex rounded-full border border-line px-4 py-2 text-sm font-medium text-ink hover:bg-sand"
+          >
+            Open widget preview
+          </a>
+        </section>
+      )}
+
+      {goLive && (
+        <section className="mb-6 rounded-2xl border border-line bg-foam p-6">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 className="text-lg font-semibold text-ink">Go-live checklist</h2>
             <span className="text-sm text-ink-soft">
