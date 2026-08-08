@@ -18,9 +18,26 @@ type EmailStatus = {
   hint: string;
 };
 
+type GoLiveCheck = {
+  id: string;
+  label: string;
+  ready: boolean;
+  action: string;
+};
+
+type GoLiveStatus = {
+  checks: GoLiveCheck[];
+  readyCount: number;
+  requiredCount: number;
+  webhookWhatsApp: string;
+  webhookStripe: string;
+  guesthouseId: string;
+};
+
 export default function SettingsPage() {
   const [status, setStatus] = useState<Status | null>(null);
   const [emailStatus, setEmailStatus] = useState<EmailStatus | null>(null);
+  const [goLive, setGoLive] = useState<GoLiveStatus | null>(null);
   const [origin, setOrigin] = useState("");
   const [testTo, setTestTo] = useState("");
   const [testText, setTestText] = useState(
@@ -37,12 +54,14 @@ export default function SettingsPage() {
   const [emailMessage, setEmailMessage] = useState("");
 
   const refresh = useCallback(async () => {
-    const [wa, em] = await Promise.all([
+    const [wa, em, live] = await Promise.all([
       fetch("/api/whatsapp/status").then((r) => r.json() as Promise<Status>),
       fetch("/api/email/status").then((r) => r.json() as Promise<EmailStatus>),
+      fetch("/api/golive/status").then((r) => r.json() as Promise<GoLiveStatus>),
     ]);
     setStatus(wa);
     setEmailStatus(em);
+    if ("checks" in live) setGoLive(live);
   }, []);
 
   useEffect(() => {
@@ -130,6 +149,59 @@ export default function SettingsPage() {
           Connect WhatsApp and email to go live with real guests.
         </p>
       </header>
+
+      {goLive && (
+        <section className="mb-6 rounded-2xl border border-line bg-foam p-6">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h2 className="text-lg font-semibold text-ink">Go-live checklist</h2>
+            <span className="text-sm text-ink-soft">
+              {goLive.readyCount}/{goLive.requiredCount} ready
+            </span>
+          </div>
+          <ul className="mt-4 space-y-3">
+            {goLive.checks.map((c) => (
+              <li
+                key={c.id}
+                className="flex flex-wrap items-start justify-between gap-2 border-t border-line pt-3 first:border-t-0 first:pt-0"
+              >
+                <div>
+                  <p className="text-sm font-medium text-ink">{c.label}</p>
+                  <p className="mt-0.5 break-all text-xs text-ink-soft">
+                    {c.action}
+                  </p>
+                </div>
+                <span
+                  className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                    c.ready
+                      ? "bg-emerald-100 text-emerald-900"
+                      : "bg-sand text-ink-soft"
+                  }`}
+                >
+                  {c.ready ? "Ready" : "Todo"}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-4 space-y-1 text-xs text-ink-soft">
+            <p>
+              WhatsApp webhook:{" "}
+              <code className="break-all rounded bg-sand px-1">
+                {goLive.webhookWhatsApp}
+              </code>
+            </p>
+            <p>
+              Stripe webhook:{" "}
+              <code className="break-all rounded bg-sand px-1">
+                {goLive.webhookStripe}
+              </code>
+            </p>
+            <p>
+              Your guesthouse id:{" "}
+              <code className="rounded bg-sand px-1">{goLive.guesthouseId}</code>
+            </p>
+          </div>
+        </section>
+      )}
 
       <section className="rounded-2xl border border-line bg-foam p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
