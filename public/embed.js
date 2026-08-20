@@ -14,7 +14,7 @@
   var btn = document.createElement("button");
   btn.type = "button";
   btn.setAttribute("aria-label", "Contact guesthouse");
-  btn.textContent = "Chat / Book";
+  btn.textContent = "Message us";
   btn.style.cssText =
     "position:fixed;right:16px;bottom:16px;z-index:99999;border:0;border-radius:999px;padding:14px 18px;background:#0d6b6e;color:#faf8f4;font:600 14px/1 system-ui,sans-serif;box-shadow:0 8px 24px rgba(20,37,38,.25);cursor:pointer;";
 
@@ -31,7 +31,7 @@
   btn.addEventListener("click", function () {
     var open = panel.style.display === "block";
     panel.style.display = open ? "none" : "block";
-    btn.textContent = open ? "Chat / Book" : "Close";
+    btn.textContent = open ? "Message us" : "Close";
   });
 
   document.body.appendChild(panel);

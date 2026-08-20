@@ -16,11 +16,11 @@ const body = Outfit({
 export const metadata: Metadata = {
   title: "Meckvy — Guesthouse automation for the Maldives",
   description:
-    "Save hours every day. Meckvy automates WhatsApp & email for Maldivian guesthouses — with instant guest-language translation.",
+    "Save hours every day. Meckvy turns website guest inquiries into one inbox for Maldivian guesthouses — with instant guest-language translation.",
   openGraph: {
     title: "Meckvy — Guesthouse automation for the Maldives",
     description:
-      "WhatsApp & email on autopilot for Maldivian guesthouses, with translation.",
+      "Website widget + inbox for Maldivian guesthouses, with translation.",
     images: [{ url: "/redhan.jpeg", width: 1200, height: 630, alt: "Meckvy" }],
   },
 };

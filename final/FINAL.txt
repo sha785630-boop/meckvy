@@ -1,0 +1,54 @@
+# Meckvy — FINAL
+
+Your finished product.
+
+## Live website
+https://meckvy-bqug.vercel.app
+
+Hard-refresh (Cmd+Shift+R) if the homepage looks old.
+
+### Pages to show customers
+- Home (sales page): https://meckvy-bqug.vercel.app/
+- Pricing: https://meckvy-bqug.vercel.app/pricing
+- Demo login: https://meckvy-bqug.vercel.app/login
+- Dashboard / Inbox: https://meckvy-bqug.vercel.app/dashboard
+- Guest widget preview: https://meckvy-bqug.vercel.app/widget/gh-demo
+- Settings (widget code): https://meckvy-bqug.vercel.app/dashboard/settings
+
+### Demo login
+- Email: demo@meckvy.mv
+- Password: demo1234
+
+## Pitch in 60 seconds
+1. Open the homepage — “Never miss a booking enquiry again”
+2. Scroll to the live widget + inbox preview
+3. Click Try free demo → sign in with demo login
+4. Show Inbox + Settings widget snippet
+5. Pricing: Starter $29 / Pro $59
+
+## What Meckvy does
+Website widget → one Meckvy inbox for Maldivian guesthouses.
+Translation, templates, automations, Stripe pricing.
+WhatsApp / Resend email APIs are optional later (not required to sell).
+
+## How a customer goes live
+1. Paste the website widget (from Settings) on their site
+2. Guest inquiries land in Inbox
+3. Reply from Inbox (demo mode works; add Resend for real email)
+4. Add Stripe when they pay; WhatsApp later if Meta signup works
+
+## Code & files
+- GitHub: https://github.com/sha785630-boop/meckvy
+- Mac folder: ~/Projects/meckvy
+- This pack: ~/Projects/meckvy/final/
+
+### In this folder
+- FINAL.txt — this file
+- meckvy-final-source.zip — source backup (no secrets / no node_modules)
+- cover-redhan.jpeg — homepage cover photo
+
+## Local run (this Mac)
+cd ~/Projects/meckvy
+npm install
+npm run dev
+→ http://127.0.0.1:3000

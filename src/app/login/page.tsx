@@ -38,7 +38,7 @@ function LoginForm() {
   return (
     <form
       onSubmit={(e) => void onSubmit(e)}
-      className="mt-8 rounded-2xl border border-line bg-foam p-6 shadow-sm"
+      className="mt-8 rounded-2xl border border-line/80 bg-foam/90 p-6 backdrop-blur-sm"
     >
       <label className="block text-sm">
         <span className="font-medium text-ink-soft">Email</span>
@@ -63,7 +63,7 @@ function LoginForm() {
       <button
         type="submit"
         disabled={busy}
-        className="mt-6 w-full rounded-full bg-lagoon py-3 text-sm font-semibold text-foam hover:bg-lagoon-deep disabled:opacity-50"
+        className="mt-6 w-full rounded-full bg-lagoon py-3 text-sm font-semibold text-foam transition hover:bg-lagoon-deep disabled:opacity-50 btn-lift"
       >
         {busy ? "Signing in…" : "Sign in"}
       </button>
@@ -81,28 +81,37 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <main className="flex min-h-screen flex-col bg-sand">
-      <header className="flex items-center justify-between border-b border-line bg-foam px-6 py-5">
+    <main className="sand-glow relative flex min-h-screen flex-col overflow-hidden">
+      <div
+        className="animate-soft-pulse pointer-events-none absolute -right-20 top-24 h-64 w-64 rounded-full bg-lagoon-mist/40 blur-3xl"
+        aria-hidden
+      />
+      <header className="relative z-10 flex items-center justify-between border-b border-line/70 bg-foam/70 px-6 py-5 backdrop-blur-md">
         <Link
           href="/"
           className="font-[family-name:var(--font-display)] text-xl font-semibold text-lagoon-deep"
         >
           Meckvy
         </Link>
-        <Link href="/register" className="text-sm font-medium text-ink-soft">
+        <Link
+          href="/register"
+          className="btn-lift text-sm font-medium text-ink-soft hover:text-ink"
+        >
           Create account
         </Link>
       </header>
-      <div className="mx-auto w-full max-w-md px-6 py-14">
-        <h1 className="font-[family-name:var(--font-display)] text-3xl font-semibold text-ink">
+      <div className="relative z-10 mx-auto w-full max-w-md px-6 py-14">
+        <h1 className="animate-fade-up font-[family-name:var(--font-display)] text-3xl font-semibold text-ink">
           Sign in
         </h1>
-        <p className="mt-2 text-sm text-ink-soft">
+        <p className="animate-fade-up-delay mt-2 text-sm text-ink-soft">
           Each guesthouse gets its own inbox and data.
         </p>
-        <Suspense fallback={<p className="mt-8 text-sm text-ink-soft">Loading…</p>}>
-          <LoginForm />
-        </Suspense>
+        <div className="animate-fade-up-delay-2">
+          <Suspense fallback={<p className="mt-8 text-sm text-ink-soft">Loading…</p>}>
+            <LoginForm />
+          </Suspense>
+        </div>
       </div>
     </main>
   );

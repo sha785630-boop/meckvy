@@ -93,6 +93,7 @@ async function ensureSchema(client: Client) {
     `ALTER TABLE guesthouses ADD COLUMN plan_status TEXT NOT NULL DEFAULT 'trialing'`,
     `ALTER TABLE guesthouses ADD COLUMN stripe_customer_id TEXT`,
     `ALTER TABLE guesthouses ADD COLUMN stripe_subscription_id TEXT`,
+    `ALTER TABLE guesthouses ADD COLUMN whatsapp_number TEXT`,
   ];
   for (const sql of alterStatements) {
     try {
@@ -129,6 +130,7 @@ async function seedDemoAccount(db: AppDb) {
       planStatus: "trialing",
       stripeCustomerId: null,
       stripeSubscriptionId: null,
+      whatsappNumber: null,
       createdAt: now,
     });
   }

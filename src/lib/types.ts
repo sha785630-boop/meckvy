@@ -1,4 +1,4 @@
-export type Channel = "whatsapp" | "email";
+export type Channel = "whatsapp" | "email" | "website";
 
 export type LanguageCode =
   | "en"

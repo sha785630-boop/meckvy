@@ -106,6 +106,7 @@ export async function registerAccount(input: {
     planStatus: "trialing",
     stripeCustomerId: null,
     stripeSubscriptionId: null,
+    whatsappNumber: null,
     createdAt: now,
   });
 

@@ -17,6 +17,7 @@ export const guesthouses = sqliteTable("guesthouses", {
   planStatus: text("plan_status").notNull().default("trialing"), // trialing | active | past_due | canceled
   stripeCustomerId: text("stripe_customer_id"),
   stripeSubscriptionId: text("stripe_subscription_id"),
+  whatsappNumber: text("whatsapp_number"),
   createdAt: text("created_at").notNull(),
 });
 

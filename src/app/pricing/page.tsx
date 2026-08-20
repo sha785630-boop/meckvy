@@ -15,22 +15,22 @@ const PLANS: {
     id: "starter",
     name: "Starter",
     price: "$29 / month",
-    blurb: "One guesthouse · WhatsApp inbox + translation",
+    blurb: "One guesthouse · website widget + inbox + translation",
     features: [
-      "Unified WhatsApp inbox",
+      "Website contact widget",
+      "Unified guest inbox",
       "Guest-language translation",
       "Booking & transfer templates",
-      "Email support",
     ],
   },
   {
     id: "pro",
     name: "Pro",
     price: "$59 / month",
-    blurb: "WhatsApp + email · automations that save hours",
+    blurb: "Widget + email · automations that save hours",
     features: [
       "Everything in Starter",
-      "Email channel",
+      "Email replies to guests",
       "Check-in & FAQ automations",
       "Priority onboarding help",
     ],
@@ -134,8 +134,8 @@ export default function PricingPage() {
   }
 
   return (
-    <main className="min-h-screen bg-sand">
-      <header className="flex items-center justify-between border-b border-line bg-foam px-6 py-5 md:px-10">
+    <main className="sand-glow min-h-screen">
+      <header className="flex items-center justify-between border-b border-line/70 bg-foam/75 px-6 py-5 backdrop-blur-md md:px-10">
         <Link
           href="/"
           className="font-[family-name:var(--font-display)] text-xl font-semibold text-lagoon-deep"
@@ -144,22 +144,22 @@ export default function PricingPage() {
         </Link>
         <Link
           href="/login"
-          className="text-sm font-medium text-ink-soft hover:text-ink"
+          className="btn-lift text-sm font-medium text-ink-soft hover:text-ink"
         >
           Sign in
         </Link>
       </header>
 
       <div className="mx-auto max-w-5xl px-6 py-14 md:px-10">
-        <h1 className="font-[family-name:var(--font-display)] text-4xl font-semibold text-ink md:text-5xl">
-          Simple pricing for island guesthouses
+        <h1 className="animate-fade-up font-[family-name:var(--font-display)] text-4xl font-semibold text-ink md:text-5xl">
+          Start taking more bookings — from $29/month
         </h1>
-        <p className="mt-3 max-w-2xl text-ink-soft">
-          Subscribe with Stripe (monthly). Sign in first, then pay — or leave
-          your details below and we’ll follow up.
+        <p className="animate-fade-up-delay mt-3 max-w-2xl text-lg text-ink-soft">
+          One lost enquiry costs more than a month of Meckvy. Pick a plan, try
+          the demo, paste the widget on their site.
         </p>
 
-        <div className="mt-10 grid gap-4 md:grid-cols-2">
+        <div className="animate-fade-up-delay-2 mt-10 grid gap-4 md:grid-cols-2">
           {PLANS.map((p) => (
             <div
               key={p.id}
@@ -220,7 +220,7 @@ export default function PricingPage() {
             Sign up — {plan === "pro" ? "Pro" : "Starter"}
           </h2>
           <p className="mt-1 text-sm text-ink-soft">
-            Tell us about your guesthouse. We’ll reach out on WhatsApp or email.
+            Tell us about your guesthouse. We’ll reach out by email or phone.
           </p>
 
           <div className="mt-6 grid gap-4 md:grid-cols-2">
@@ -230,7 +230,7 @@ export default function PricingPage() {
                 ["island", "Island", "Maafushi"],
                 ["contactName", "Your name", "Ahmed"],
                 ["email", "Email", "you@guesthouse.mv"],
-                ["phone", "WhatsApp / phone", "9607xxxxxxx"],
+                ["phone", "Phone", "9607xxxxxxx"],
               ] as const
             ).map(([key, label, placeholder]) => (
               <label key={key} className="block text-sm">

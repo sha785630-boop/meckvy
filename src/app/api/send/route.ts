@@ -95,6 +95,86 @@ export async function POST(request: Request) {
       });
     }
 
+    // Website widget inquiries — reply by email when guest left an email
+    if (body.channel === "website") {
+      const looksLikeEmail = body.to.includes("@");
+      if (!looksLikeEmail) {
+        await appendOutboundNote(
+          ghId,
+          body.threadId,
+          `[WEBSITE REPLY SAVED → ${body.to}]\n${finalText}`,
+          "website",
+          body.to,
+        );
+        return NextResponse.json({
+          ok: true,
+          deliveredAs: finalText,
+          translationProvider,
+          delivery: {
+            status: "saved",
+            provider: "inbox",
+            note: "Reply saved in inbox — guest left a phone only. Call/WhatsApp them manually, or ask for email next time.",
+          },
+        });
+      }
+
+      if (!isEmailConfigured()) {
+        await appendOutboundNote(
+          ghId,
+          body.threadId,
+          `[WEBSITE DEMO EMAIL → ${body.to}]\n${finalText}`,
+          "website",
+          body.to,
+        );
+        return NextResponse.json({
+          ok: true,
+          deliveredAs: finalText,
+          translationProvider,
+          delivery: {
+            status: "queued",
+            provider: "demo",
+            note: "Reply saved — add RESEND_API_KEY in Settings to email guests for real",
+          },
+          subject: body.subject,
+        });
+      }
+
+      const webSubject =
+        body.subject?.trim() ||
+        `Re: your inquiry — ${session.guesthouseName}`;
+
+      const webResult = await sendEmail({
+        to: body.to,
+        subject: webSubject,
+        text: finalText,
+      });
+
+      if (!webResult.ok) {
+        return NextResponse.json({ error: webResult.error }, { status: 502 });
+      }
+
+      await appendOutboundNote(
+        ghId,
+        body.threadId,
+        `[WEBSITE EMAIL → ${body.to}]\nSubject: ${webSubject}\n${finalText}`,
+        "website",
+        body.to,
+      );
+
+      return NextResponse.json({
+        ok: true,
+        deliveredAs: finalText,
+        translationProvider,
+        delivery: {
+          status: "sent",
+          provider: "resend",
+          messageId: webResult.id,
+          note: "Emailed guest (website inquiry)",
+        },
+        subject: webSubject,
+      });
+    }
+
     // Email
     if (!isEmailConfigured()) {
       await appendOutboundNote(

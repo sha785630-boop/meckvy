@@ -69,15 +69,18 @@ function WidgetForm() {
 
   return (
     <div
-      className={`min-h-full ${embed ? "bg-transparent p-3" : "bg-sand px-4 py-10"}`}
+      className={`min-h-full ${
+        embed ? "bg-transparent p-3" : "sand-glow px-4 py-10"
+      }`}
     >
       <div
-        className={`mx-auto max-w-md rounded-2xl border border-line bg-foam p-5 ${
-          embed ? "shadow-none" : "shadow-sm"
+        className={`animate-fade-up mx-auto max-w-md border border-line/80 bg-foam/95 p-5 backdrop-blur-sm ${
+          embed ? "rounded-2xl" : "rounded-2xl"
         }`}
       >
-        <p className="text-xs font-semibold uppercase tracking-wide text-lagoon-deep">
-          Meckvy
+        <div className="h-px w-16 bg-gradient-to-r from-lagoon to-transparent" aria-hidden />
+        <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-lagoon-deep">
+          Message the guesthouse
         </p>
         <h1 className="mt-1 font-[family-name:var(--font-display)] text-2xl font-semibold text-ink">
           {info?.name ?? "Guesthouse"}
@@ -86,8 +89,8 @@ function WidgetForm() {
           <p className="mt-1 text-sm text-ink-soft">{info.island}, Maldives</p>
         )}
         <p className="mt-3 text-sm text-ink-soft">
-          Send a booking or stay question — the team will reply by email or
-          WhatsApp.
+          Ask about rooms, transfers, or check-in. Your message goes straight to
+          their Meckvy inbox — they reply by email.
         </p>
 
         <form onSubmit={(e) => void submit(e)} className="mt-5 space-y-3">
@@ -97,25 +100,29 @@ function WidgetForm() {
               required
               value={form.name}
               onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-              className="mt-1 w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm outline-none ring-lagoon focus:ring-2"
+              className="mt-1 w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm outline-none ring-lagoon transition focus:ring-2"
             />
           </label>
           <label className="block text-sm">
             <span className="font-medium text-ink-soft">Email</span>
+            <span className="ml-1 text-xs text-ink-soft">(best for a reply)</span>
             <input
               type="email"
+              required
               value={form.email}
               onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-              className="mt-1 w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm outline-none ring-lagoon focus:ring-2"
+              placeholder="you@email.com"
+              className="mt-1 w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm outline-none ring-lagoon transition focus:ring-2"
             />
           </label>
           <label className="block text-sm">
-            <span className="font-medium text-ink-soft">WhatsApp / phone</span>
+            <span className="font-medium text-ink-soft">Phone</span>
+            <span className="ml-1 text-xs text-ink-soft">(optional)</span>
             <input
               value={form.phone}
               onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
               placeholder="9607xxxxxxx"
-              className="mt-1 w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm outline-none ring-lagoon focus:ring-2"
+              className="mt-1 w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm outline-none ring-lagoon transition focus:ring-2"
             />
           </label>
           <label className="block text-sm">
@@ -124,7 +131,7 @@ function WidgetForm() {
               value={form.dates}
               onChange={(e) => setForm((f) => ({ ...f, dates: e.target.value }))}
               placeholder="12–15 June"
-              className="mt-1 w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm outline-none ring-lagoon focus:ring-2"
+              className="mt-1 w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm outline-none ring-lagoon transition focus:ring-2"
             />
           </label>
           <label className="block text-sm">
@@ -136,20 +143,21 @@ function WidgetForm() {
               onChange={(e) =>
                 setForm((f) => ({ ...f, message: e.target.value }))
               }
-              className="mt-1 w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm outline-none ring-lagoon focus:ring-2"
+              placeholder="Do you have a twin room for these dates?"
+              className="mt-1 w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm outline-none ring-lagoon transition focus:ring-2"
             />
           </label>
           <button
             type="submit"
             disabled={busy}
-            className="w-full rounded-full bg-lagoon py-3 text-sm font-semibold text-foam hover:bg-lagoon-deep disabled:opacity-50"
+            className="btn-lift w-full rounded-full bg-lagoon py-3 text-sm font-semibold text-foam hover:bg-lagoon-deep disabled:opacity-50"
           >
-            {busy ? "Sending…" : "Send inquiry"}
+            {busy ? "Sending…" : "Send to inbox"}
           </button>
         </form>
 
         {done && (
-          <p className="mt-3 text-sm text-lagoon-deep" role="status">
+          <p className="animate-fade-up mt-3 text-sm text-lagoon-deep" role="status">
             {done}
           </p>
         )}

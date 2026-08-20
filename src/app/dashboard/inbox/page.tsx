@@ -6,9 +6,23 @@ import { fillTemplate } from "@/lib/translate";
 import type { GuestMessage, LanguageCode } from "@/lib/types";
 
 function channelBadge(channel: GuestMessage["channel"]) {
-  return channel === "whatsapp"
-    ? "bg-emerald-100 text-emerald-900"
-    : "bg-sky-100 text-sky-900";
+  if (channel === "website") return "bg-amber-100 text-amber-950";
+  if (channel === "whatsapp") return "bg-emerald-100 text-emerald-900";
+  return "bg-sky-100 text-sky-900";
+}
+
+function channelLabel(channel: GuestMessage["channel"]) {
+  if (channel === "website") return "Website";
+  if (channel === "whatsapp") return "WhatsApp";
+  return "Email";
+}
+
+function sendButtonLabel(channel: GuestMessage["channel"], contact: string) {
+  if (channel === "website") {
+    return contact.includes("@") ? "Reply by email" : "Save reply";
+  }
+  if (channel === "whatsapp") return "Send via WhatsApp";
+  return "Send via Email";
 }
 
 function statusLabel(status: GuestMessage["status"]) {
@@ -159,7 +173,7 @@ export default function InboxPage() {
             Inbox
           </h1>
           <p className="mt-1 text-sm text-ink-soft">
-            WhatsApp + Email · auto-translated previews
+            Website widget first · email & WhatsApp optional
           </p>
         </header>
         <ul className="divide-y divide-line overflow-hidden rounded-2xl border border-line bg-foam">
@@ -176,7 +190,7 @@ export default function InboxPage() {
                   <span
                     className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase ${channelBadge(m.channel)}`}
                   >
-                    {m.channel}
+                    {channelLabel(m.channel)}
                   </span>
                   {m.status === "unread" && (
                     <span className="h-2 w-2 rounded-full bg-coral" />
@@ -217,7 +231,7 @@ export default function InboxPage() {
               <span
                 className={`rounded-full px-3 py-1 text-xs font-semibold uppercase ${channelBadge(selected.channel)}`}
               >
-                {selected.channel}
+                {channelLabel(selected.channel)}
               </span>
             </div>
 
@@ -305,7 +319,7 @@ export default function InboxPage() {
                   onClick={() => void sendReply()}
                   className="rounded-full bg-lagoon px-5 py-2 text-sm font-semibold text-foam hover:bg-lagoon-deep disabled:opacity-50"
                 >
-                  Send via {selected.channel === "whatsapp" ? "WhatsApp" : "Email"}
+                  {sendButtonLabel(selected.channel, selected.guestContact)}
                 </button>
               </div>
 

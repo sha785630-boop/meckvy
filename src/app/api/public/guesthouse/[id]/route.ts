@@ -76,9 +76,9 @@ export async function POST(
       );
     }
 
-    if (!email && !phone) {
+    if (!email) {
       return NextResponse.json(
-        { error: "Email or phone is required" },
+        { error: "Please leave an email so the guesthouse can reply" },
         { status: 400, headers: corsHeaders() },
       );
     }
@@ -96,22 +96,19 @@ export async function POST(
       );
     }
 
-    const contact = email || phone || "unknown";
-    const channel = email ? "email" : "whatsapp";
-    const threadKey = email
-      ? `em-${email.toLowerCase()}`
-      : `wa-${phone!.replace(/\D/g, "")}`;
+    const contact = email;
+    const threadKey = `web-${email.toLowerCase()}`;
 
     const fullBody = [
       message,
       body.dates?.trim() ? `\n\nStay dates: ${body.dates.trim()}` : "",
-      phone && email ? `\n\nPhone: ${phone}` : "",
+      phone ? `\n\nPhone: ${phone}` : "",
       "\n\n— Sent from website widget",
     ].join("");
 
     const inbound: GuestMessage = {
       id: `web-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-      channel,
+      channel: "website",
       guestName: name,
       guestContact: contact,
       subject: `Website inquiry — ${name}`,
@@ -127,7 +124,7 @@ export async function POST(
     return NextResponse.json(
       {
         ok: true,
-        message: "Thanks — the guesthouse will reply soon.",
+        message: "Thanks — your message is in the guesthouse inbox. They’ll reply soon.",
       },
       { headers: corsHeaders() },
     );

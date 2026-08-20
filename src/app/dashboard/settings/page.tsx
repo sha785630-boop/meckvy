@@ -31,6 +31,7 @@ type GoLiveStatus = {
   requiredCount: number;
   webhookWhatsApp: string;
   webhookStripe: string;
+  widgetPath?: string;
   guesthouseId: string;
 };
 
@@ -50,18 +51,30 @@ export default function SettingsPage() {
   );
   const [busy, setBusy] = useState(false);
   const [emailBusy, setEmailBusy] = useState(false);
+  const [savingNumber, setSavingNumber] = useState(false);
+  const [savedNumber, setSavedNumber] = useState("");
+  const [numberDraft, setNumberDraft] = useState("");
+  const [numberMessage, setNumberMessage] = useState("");
   const [message, setMessage] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
 
   const refresh = useCallback(async () => {
-    const [wa, em, live] = await Promise.all([
+    const [wa, em, live, gh] = await Promise.all([
       fetch("/api/whatsapp/status").then((r) => r.json() as Promise<Status>),
       fetch("/api/email/status").then((r) => r.json() as Promise<EmailStatus>),
       fetch("/api/golive/status").then((r) => r.json() as Promise<GoLiveStatus>),
+      fetch("/api/guesthouse").then((r) =>
+        r.json() as Promise<{ whatsappNumber?: string }>,
+      ),
     ]);
     setStatus(wa);
     setEmailStatus(em);
     if ("checks" in live) setGoLive(live);
+    if (gh.whatsappNumber) {
+      setSavedNumber(gh.whatsappNumber);
+      setNumberDraft(gh.whatsappNumber);
+      setTestTo((current) => current || gh.whatsappNumber || "");
+    }
   }, []);
 
   useEffect(() => {
@@ -76,6 +89,32 @@ export default function SettingsPage() {
   const emailWebhookUrl = origin
     ? `${origin}${emailStatus?.webhookPath ?? "/api/email/webhook"}`
     : emailStatus?.webhookPath ?? "/api/email/webhook";
+
+  async function saveNumber() {
+    setSavingNumber(true);
+    setNumberMessage("");
+    try {
+      const res = await fetch("/api/guesthouse", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ whatsappNumber: numberDraft }),
+      });
+      const data = (await res.json()) as {
+        ok?: boolean;
+        whatsappNumber?: string;
+        error?: string;
+      };
+      if (!res.ok || !data.ok) {
+        setNumberMessage(data.error ?? "Could not save number");
+        return;
+      }
+      setSavedNumber(data.whatsappNumber ?? "");
+      setTestTo(data.whatsappNumber ?? "");
+      setNumberMessage("WhatsApp number saved.");
+    } finally {
+      setSavingNumber(false);
+    }
+  }
 
   async function sendTest() {
     setBusy(true);
@@ -146,19 +185,27 @@ export default function SettingsPage() {
           Settings
         </h1>
         <p className="mt-1 text-ink-soft">
-          Connect WhatsApp and email to go live with real guests.
+          Put the website widget on the guesthouse site — guest messages land in
+          Inbox. WhatsApp and email APIs are optional later.
         </p>
       </header>
 
       {goLive && (
-        <section className="mb-6 rounded-2xl border border-line bg-foam p-6">
-          <h2 className="text-lg font-semibold text-ink">Website widget</h2>
+        <section className="mb-6 rounded-2xl border border-lagoon/30 bg-foam p-6">
+          <p className="text-xs font-semibold uppercase tracking-wide text-lagoon-deep">
+            Main guest channel
+          </p>
+          <h2 className="mt-1 text-lg font-semibold text-ink">Website widget</h2>
           <p className="mt-2 text-sm text-ink-soft">
-            Put this on the guesthouse website. Guest messages land in your
-            Meckvy inbox.
+            1) Paste the snippet on their website · 2) Guest sends an inquiry ·
+            3) You reply in{" "}
+            <a href="/dashboard/inbox" className="font-medium text-lagoon-deep underline">
+              Inbox
+            </a>
+            .
           </p>
           <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-ink-soft">
-            Direct page link
+            Direct page link (share or QR)
           </p>
           <code className="mt-1 block break-all rounded-xl bg-sand px-3 py-2 text-xs text-ink">
             {origin}/widget/{goLive.guesthouseId}
@@ -184,14 +231,22 @@ export default function SettingsPage() {
   style="width:100%;height:560px;border:0;border-radius:16px;"
 ></iframe>`}
           </pre>
-          <a
-            href={`/widget/${goLive.guesthouseId}`}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-4 inline-flex rounded-full border border-line px-4 py-2 text-sm font-medium text-ink hover:bg-sand"
-          >
-            Open widget preview
-          </a>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <a
+              href={`/widget/${goLive.guesthouseId}`}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex rounded-full bg-lagoon px-4 py-2 text-sm font-semibold text-foam hover:bg-lagoon-deep"
+            >
+              Open widget preview
+            </a>
+            <a
+              href="/dashboard/inbox"
+              className="inline-flex rounded-full border border-line px-4 py-2 text-sm font-medium text-ink hover:bg-sand"
+            >
+              Open inbox
+            </a>
+          </div>
         </section>
       )}
 
@@ -200,9 +255,13 @@ export default function SettingsPage() {
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 className="text-lg font-semibold text-ink">Go-live checklist</h2>
             <span className="text-sm text-ink-soft">
-              {goLive.readyCount}/{goLive.requiredCount} ready
+              {goLive.readyCount}/{goLive.requiredCount} required ready
             </span>
           </div>
+          <p className="mt-2 text-xs text-ink-soft">
+            Required items unlock demos for customers. WhatsApp / Stripe / email
+            keys are optional.
+          </p>
           <ul className="mt-4 space-y-3">
             {goLive.checks.map((c) => (
               <li
@@ -229,20 +288,14 @@ export default function SettingsPage() {
           </ul>
           <div className="mt-4 space-y-1 text-xs text-ink-soft">
             <p>
-              WhatsApp webhook:{" "}
-              <code className="break-all rounded bg-sand px-1">
-                {goLive.webhookWhatsApp}
-              </code>
+              Your guesthouse id:{" "}
+              <code className="rounded bg-sand px-1">{goLive.guesthouseId}</code>
             </p>
             <p>
-              Stripe webhook:{" "}
+              Stripe webhook (when billing):{" "}
               <code className="break-all rounded bg-sand px-1">
                 {goLive.webhookStripe}
               </code>
-            </p>
-            <p>
-              Your guesthouse id:{" "}
-              <code className="rounded bg-sand px-1">{goLive.guesthouseId}</code>
             </p>
           </div>
         </section>
@@ -250,7 +303,12 @@ export default function SettingsPage() {
 
       <section className="rounded-2xl border border-line bg-foam p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-lg font-semibold text-ink">WhatsApp Cloud API</h2>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-ink-soft">
+              Optional later
+            </p>
+            <h2 className="text-lg font-semibold text-ink">WhatsApp Cloud API</h2>
+          </div>
           <span
             className={`rounded-full px-3 py-1 text-xs font-semibold ${
               status?.configured
@@ -258,10 +316,51 @@ export default function SettingsPage() {
                 : "bg-sand text-ink-soft"
             }`}
           >
-            {status?.configured ? "Credentials loaded" : "Not connected"}
+            {status?.configured ? "Credentials loaded" : "Not needed for widget"}
           </span>
         </div>
-        <p className="mt-2 text-sm text-ink-soft">{status?.hint}</p>
+        <p className="mt-2 text-sm text-ink-soft">
+          Skip this until Meta developer signup works. The website widget already
+          delivers guest messages to Inbox.
+        </p>
+        <details className="mt-4">
+          <summary className="cursor-pointer text-sm font-medium text-lagoon-deep">
+            Show WhatsApp setup (Meta)
+          </summary>
+          <p className="mt-2 text-sm text-ink-soft">{status?.hint}</p>
+
+        <div className="mt-5 rounded-xl border border-lagoon/25 bg-lagoon-mist/30 px-4 py-4">
+          <h3 className="text-sm font-semibold text-ink">Your WhatsApp number</h3>
+          <p className="mt-1 text-xs text-ink-soft">
+            This is the phone that should receive test messages. Maldives: start
+            with 960, no spaces — e.g. 9607XXXXXXX.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <input
+              value={numberDraft}
+              onChange={(e) => setNumberDraft(e.target.value)}
+              placeholder="9607XXXXXXX"
+              inputMode="tel"
+              className="min-w-[220px] flex-1 rounded-xl border border-line bg-white px-3 py-2.5 text-sm outline-none ring-lagoon focus:ring-2"
+            />
+            <button
+              type="button"
+              disabled={savingNumber || !numberDraft.trim()}
+              onClick={() => void saveNumber()}
+              className="rounded-full bg-lagoon px-5 py-2.5 text-sm font-semibold text-foam hover:bg-lagoon-deep disabled:opacity-50"
+            >
+              {savingNumber ? "Saving…" : "Save number"}
+            </button>
+          </div>
+          {savedNumber && (
+            <p className="mt-2 text-xs text-lagoon-deep">Saved: {savedNumber}</p>
+          )}
+          {numberMessage && (
+            <p className="mt-2 text-xs text-coral" role="status">
+              {numberMessage}
+            </p>
+          )}
+        </div>
 
         <div className="mt-5 rounded-xl bg-sand px-4 py-4 text-sm text-ink-soft">
           <p className="font-semibold text-ink">Two different “numbers” — don’t mix them</p>
@@ -404,11 +503,17 @@ WHATSAPP_VERIFY_TOKEN=${status?.verifyToken ?? "meckvy_verify"}`}
             </p>
           )}
         </div>
+        </details>
       </section>
 
       <section className="mt-4 rounded-2xl border border-line bg-foam p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-lg font-semibold text-ink">Email (Resend)</h2>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-ink-soft">
+              Optional — for emailing guests back
+            </p>
+            <h2 className="text-lg font-semibold text-ink">Email (Resend)</h2>
+          </div>
           <span
             className={`rounded-full px-3 py-1 text-xs font-semibold ${
               emailStatus?.configured
@@ -416,9 +521,13 @@ WHATSAPP_VERIFY_TOKEN=${status?.verifyToken ?? "meckvy_verify"}`}
                 : "bg-sand text-ink-soft"
             }`}
           >
-            {emailStatus?.configured ? "Credentials loaded" : "Not connected"}
+            {emailStatus?.configured ? "Credentials loaded" : "Demo replies OK"}
           </span>
         </div>
+        <p className="mt-2 text-sm text-ink-soft">
+          Without Resend, inbox replies still save (demo). Add keys when you want
+          real emails to website guests.
+        </p>
         <p className="mt-2 text-sm text-ink-soft">{emailStatus?.hint}</p>
 
         <ol className="mt-5 list-decimal space-y-2 pl-5 text-sm text-ink-soft">
@@ -523,8 +632,8 @@ EMAIL_FROM="Lagoon Pearl <stay@yourdomain.com>"`}
       <section className="mt-4 rounded-2xl border border-line bg-foam p-6">
         <h2 className="text-lg font-semibold text-ink">Translation</h2>
         <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-          Inbox replies translate on send for both WhatsApp and email when you
-          pick the guest language.
+          Inbox replies translate on send for website, email, and WhatsApp when
+          you pick the guest language.
         </p>
       </section>
     </div>

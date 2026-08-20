@@ -13,6 +13,7 @@ export default async function DashboardPage() {
   const unread = messages.filter((m) => m.status === "unread").length;
   const activeAutos = AUTOMATIONS.filter((a) => a.enabled).length;
   const channels = {
+    website: messages.filter((m) => m.channel === "website").length,
     whatsapp: messages.filter((m) => m.channel === "whatsapp").length,
     email: messages.filter((m) => m.channel === "email").length,
   };
@@ -82,15 +83,23 @@ export default async function DashboardPage() {
       <section className="mt-10 rounded-2xl border border-line bg-foam p-6">
         <h2 className="text-lg font-semibold text-ink">Your inbox</h2>
         <p className="mt-1 text-sm text-ink-soft">
-          {channels.whatsapp} WhatsApp · {channels.email} email messages for this
-          guesthouse only.
+          {channels.website} website · {channels.email} email ·{" "}
+          {channels.whatsapp} WhatsApp — this guesthouse only.
         </p>
-        <Link
-          href="/dashboard/inbox"
-          className="mt-5 inline-flex rounded-full bg-lagoon px-5 py-2.5 text-sm font-semibold text-foam hover:bg-lagoon-deep"
-        >
-          Open inbox
-        </Link>
+        <div className="mt-5 flex flex-wrap gap-2">
+          <Link
+            href="/dashboard/inbox"
+            className="inline-flex rounded-full bg-lagoon px-5 py-2.5 text-sm font-semibold text-foam hover:bg-lagoon-deep"
+          >
+            Open inbox
+          </Link>
+          <Link
+            href="/dashboard/settings"
+            className="inline-flex rounded-full border border-line px-5 py-2.5 text-sm font-medium text-ink hover:bg-sand"
+          >
+            Website widget
+          </Link>
+        </div>
       </section>
     </div>
   );

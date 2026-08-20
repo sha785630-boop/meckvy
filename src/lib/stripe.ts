@@ -10,12 +10,12 @@ export const PLAN_PRICES: Record<
   starter: {
     name: "Meckvy Starter",
     amountUsd: 29,
-    description: "WhatsApp inbox + translation",
+    description: "Website widget + inbox + translation",
   },
   pro: {
     name: "Meckvy Pro",
     amountUsd: 59,
-    description: "WhatsApp + email + automations",
+    description: "Widget + email + automations",
   },
 };
 

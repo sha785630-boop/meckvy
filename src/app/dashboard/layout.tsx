@@ -19,8 +19,8 @@ export default async function DashboardLayout({
   const session = await getSession();
 
   return (
-    <div className="flex min-h-screen flex-col bg-sand md:flex-row">
-      <aside className="flex flex-col border-b border-line bg-foam md:w-56 md:border-b-0 md:border-r md:min-h-screen">
+    <div className="sand-glow flex min-h-screen flex-col bg-sand md:flex-row">
+      <aside className="flex flex-col border-b border-line/80 bg-foam/90 backdrop-blur-sm md:w-56 md:border-b-0 md:border-r md:min-h-screen">
         <div className="flex items-center justify-between px-5 py-5">
           <Link
             href="/"

@@ -14,8 +14,17 @@ export async function GET() {
 
   const turso = Boolean(process.env.TURSO_DATABASE_URL?.trim());
   const appUrl = getAppUrl();
+  const widgetReady = Boolean(session.guesthouseId);
 
   const checks = [
+    {
+      id: "widget",
+      label: "Website widget → Inbox",
+      ready: widgetReady,
+      action: widgetReady
+        ? "Primary channel — paste widget on the guesthouse site, reply in Inbox"
+        : "Sign in to a guesthouse account",
+    },
     {
       id: "turso",
       label: "Database (Turso)",
@@ -33,12 +42,20 @@ export async function GET() {
         : "Add NEXT_PUBLIC_APP_URL=https://meckvy-bqug.vercel.app",
     },
     {
+      id: "email",
+      label: "Email replies (Resend)",
+      ready: isEmailConfigured(),
+      action: isEmailConfigured()
+        ? "Optional — ready for email replies to website guests"
+        : "Optional — add RESEND_API_KEY + EMAIL_FROM to email guests back",
+    },
+    {
       id: "whatsapp",
-      label: "WhatsApp",
+      label: "WhatsApp (optional later)",
       ready: isWhatsAppConfigured(),
       action: isWhatsAppConfigured()
         ? "Ready — set Meta webhook to /api/whatsapp/webhook"
-        : "Add WHATSAPP_TOKEN + WHATSAPP_PHONE_NUMBER_ID",
+        : "Optional — skip until Meta developer signup works",
     },
     {
       id: "stripe",
@@ -46,19 +63,12 @@ export async function GET() {
       ready: isStripeConfigured(),
       action: isStripeConfigured()
         ? "Ready — Pricing → Pay with Stripe"
-        : "Add STRIPE_SECRET_KEY (sk_test_… or sk_live_…)",
-    },
-    {
-      id: "email",
-      label: "Email (Resend)",
-      ready: isEmailConfigured(),
-      action: isEmailConfigured()
-        ? "Ready"
-        : "Optional — add RESEND_API_KEY + EMAIL_FROM",
+        : "Optional — add STRIPE_SECRET_KEY when charging customers",
     },
   ];
 
-  const required = checks.filter((c) => c.id !== "email");
+  const requiredIds = new Set(["widget", "turso", "appUrl"]);
+  const required = checks.filter((c) => requiredIds.has(c.id));
   const readyCount = required.filter((c) => c.ready).length;
 
   return NextResponse.json({
@@ -67,6 +77,7 @@ export async function GET() {
     requiredCount: required.length,
     webhookWhatsApp: `${appUrl}/api/whatsapp/webhook`,
     webhookStripe: `${appUrl}/api/stripe/webhook`,
+    widgetPath: `/widget/${session.guesthouseId}`,
     guesthouseId: session.guesthouseId,
   });
 }

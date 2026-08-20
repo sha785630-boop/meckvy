@@ -16,7 +16,7 @@ export default function TemplatesPage() {
           Templates
         </h1>
         <p className="mt-1 text-ink-soft">
-          Ready replies for WhatsApp and email — translate on send.
+          Ready replies for website inbox and email — translate on send.
         </p>
       </header>
 

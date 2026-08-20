@@ -53,7 +53,7 @@ export async function POST(request: Request) {
       ok: true,
       id: lead.id,
       message:
-        "Thanks — we saved your signup. We’ll contact you to connect WhatsApp and start your trial.",
+        "Thanks — we saved your signup. We’ll contact you to set up the website widget and start your trial.",
     });
   } catch {
     return NextResponse.json({ error: "Could not save signup" }, { status: 500 });
