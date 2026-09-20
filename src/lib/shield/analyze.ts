@@ -438,30 +438,40 @@ export async function checkSafeBrowsing(
 export async function analyzeUrlFull(raw: string): Promise<ShieldUrlResult> {
   const result = analyzeUrl(raw);
 
-  const community = await lookupCommunityThreat(result.normalizedUrl || raw);
-  if (community) {
-    const reports = Number(community.reportCount);
-    result.flags.unshift({
-      id: "community-threat",
-      severity: "high",
-      title:
-        community.risk === "dangerous"
-          ? "Community-confirmed scam"
-          : "Reported by the community",
-      detail: `${reports} report${reports === 1 ? "" : "s"} in LinkShield. ${community.reason ?? "Others flagged this link as unsafe."}`,
-    });
-    result.score = Math.min(
-      100,
-      result.score + (community.risk === "dangerous" ? 70 : 40) + Math.min(reports, 5) * 3,
-    );
-    result.risk = scoreToRisk(result.score);
+  try {
+    const community = await lookupCommunityThreat(result.normalizedUrl || raw);
+    if (community) {
+      const reports = Number(community.reportCount);
+      result.flags.unshift({
+        id: "community-threat",
+        severity: "high",
+        title:
+          community.risk === "dangerous"
+            ? "Community-confirmed scam"
+            : "Reported by the community",
+        detail: `${reports} report${reports === 1 ? "" : "s"} in LinkShield. ${community.reason ?? "Others flagged this link as unsafe."}`,
+      });
+      result.score = Math.min(
+        100,
+        result.score +
+          (community.risk === "dangerous" ? 70 : 40) +
+          Math.min(reports, 5) * 3,
+      );
+      result.risk = scoreToRisk(result.score);
+    }
+  } catch {
+    /* community DB optional */
   }
 
-  const sbFlag = await checkSafeBrowsing(result.normalizedUrl);
-  if (sbFlag) {
-    result.flags.unshift(sbFlag);
-    result.score = Math.min(100, result.score + 60);
-    result.risk = scoreToRisk(result.score);
+  try {
+    const sbFlag = await checkSafeBrowsing(result.normalizedUrl);
+    if (sbFlag) {
+      result.flags.unshift(sbFlag);
+      result.score = Math.min(100, result.score + 60);
+      result.risk = scoreToRisk(result.score);
+    }
+  } catch {
+    /* Safe Browsing optional */
   }
   return result;
 }

@@ -28,6 +28,14 @@ function createLibsqlClient(): Client {
     });
   }
 
+  // Vercel / serverless has a read-only filesystem — use in-memory SQLite
+  if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
+    console.warn(
+      "[db] No TURSO_DATABASE_URL — using in-memory SQLite (data resets per cold start). Add Turso for persistence.",
+    );
+    return createClient({ url: ":memory:" });
+  }
+
   fs.mkdirSync(DATA_DIR, { recursive: true });
   const filePath = path.join(DATA_DIR, "meckvy.db");
   return createClient({ url: `file:${filePath}` });
@@ -225,10 +233,17 @@ export async function getDb(): Promise<AppDb> {
     const client = createLibsqlClient();
     await ensureSchema(client);
     const db = drizzle(client, { schema });
-    await seedDemoAccount(db);
+    try {
+      await seedDemoAccount(db);
+    } catch (err) {
+      console.warn("[db] seed skipped:", err);
+    }
     dbInstance = db;
     return db;
-  })();
+  })().catch((err) => {
+    initPromise = null;
+    throw err;
+  });
 
   return initPromise;
 }

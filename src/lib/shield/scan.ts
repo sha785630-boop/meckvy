@@ -1,5 +1,6 @@
 import {
   analyzeMessageContext,
+  analyzeUrl,
   analyzeUrlFull,
   overallRisk,
   riskMessage,
@@ -7,7 +8,7 @@ import {
 } from "@/lib/shield/analyze";
 import { recordCommunityThreat } from "@/lib/shield/community";
 import { extractUrls } from "@/lib/shield/extract-urls";
-import type { ShieldScanResult } from "@/lib/shield/types";
+import type { ShieldScanResult, ShieldUrlResult } from "@/lib/shield/types";
 
 export async function scanText(
   text: string,
@@ -25,14 +26,28 @@ export async function scanText(
     }
   }
 
-  // Cap bulk scans so attackers can't overwhelm the API
   const capped = urls.slice(0, 25);
   const contextFlags = analyzeMessageContext(text);
-  const results = await Promise.all(capped.map((u) => analyzeUrlFull(u)));
 
-  // Apply message-context pressure to every URL found in the message
+  // Heuristic scan always works (no database required)
+  const results: ShieldUrlResult[] = capped.map((u) => analyzeUrl(u));
+
+  // Best-effort enrichment (community list + Safe Browsing)
+  await Promise.all(
+    results.map(async (r, i) => {
+      try {
+        const full = await analyzeUrlFull(capped[i]!);
+        results[i] = full;
+      } catch {
+        /* keep heuristic result */
+      }
+    }),
+  );
+
   if (contextFlags.length > 0 && results.length > 0) {
-    const contextBoost = contextFlags.some((f) => f.severity === "high") ? 25 : 15;
+    const contextBoost = contextFlags.some((f) => f.severity === "high")
+      ? 25
+      : 15;
     for (const r of results) {
       for (const f of contextFlags) {
         if (!r.flags.some((x) => x.id === f.id)) r.flags.push(f);
@@ -52,7 +67,7 @@ export async function scanText(
             risk: r.risk,
             source: "auto",
             reason: r.flags[0]?.title,
-          }),
+          }).catch(() => null),
         ),
     );
   }

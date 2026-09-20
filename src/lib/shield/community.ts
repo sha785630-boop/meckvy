@@ -20,14 +20,18 @@ export function normalizeThreatKey(url: string): { key: string; domain: string }
 }
 
 export async function lookupCommunityThreat(url: string) {
-  const { key } = normalizeThreatKey(url);
-  const db = await getDb();
-  const rows = await db
-    .select()
-    .from(schema.shieldThreats)
-    .where(eq(schema.shieldThreats.urlHash, key))
-    .limit(1);
-  return rows[0] ?? null;
+  try {
+    const { key } = normalizeThreatKey(url);
+    const db = await getDb();
+    const rows = await db
+      .select()
+      .from(schema.shieldThreats)
+      .where(eq(schema.shieldThreats.urlHash, key))
+      .limit(1);
+    return rows[0] ?? null;
+  } catch {
+    return null;
+  }
 }
 
 export async function recordCommunityThreat(input: {
@@ -39,88 +43,105 @@ export async function recordCommunityThreat(input: {
 }) {
   if (input.risk === "safe") return null;
 
-  const { key, domain } = normalizeThreatKey(input.url);
-  const db = await getDb();
-  const existing = await db
-    .select()
-    .from(schema.shieldThreats)
-    .where(eq(schema.shieldThreats.urlHash, key))
-    .limit(1);
+  try {
+    const { key, domain } = normalizeThreatKey(input.url);
+    const db = await getDb();
+    const existing = await db
+      .select()
+      .from(schema.shieldThreats)
+      .where(eq(schema.shieldThreats.urlHash, key))
+      .limit(1);
 
-  const now = new Date().toISOString();
+    const now = new Date().toISOString();
 
-  if (existing[0]) {
-    const reports = Number(existing[0].reportCount) + 1;
-    const newRisk =
-      input.risk === "dangerous" || existing[0].risk === "dangerous"
-        ? "dangerous"
-        : "suspicious";
-    await db
-      .update(schema.shieldThreats)
-      .set({
-        reportCount: String(reports),
-        risk: newRisk,
-        lastSeenAt: now,
-        reason: input.reason ?? existing[0].reason,
-      })
-      .where(eq(schema.shieldThreats.id, existing[0].id));
-    return existing[0].id;
+    if (existing[0]) {
+      const reports = Number(existing[0].reportCount) + 1;
+      const newRisk =
+        input.risk === "dangerous" || existing[0].risk === "dangerous"
+          ? "dangerous"
+          : "suspicious";
+      await db
+        .update(schema.shieldThreats)
+        .set({
+          reportCount: String(reports),
+          risk: newRisk,
+          lastSeenAt: now,
+          reason: input.reason ?? existing[0].reason,
+        })
+        .where(eq(schema.shieldThreats.id, existing[0].id));
+      return existing[0].id;
+    }
+
+    const id = randomUUID();
+    await db.insert(schema.shieldThreats).values({
+      id,
+      urlHash: key,
+      domain,
+      sampleUrl: input.url.slice(0, 500),
+      risk: input.risk,
+      reportCount: "1",
+      source: input.source,
+      reason: input.reason ?? null,
+      firstSeenAt: now,
+      lastSeenAt: now,
+    });
+    return id;
+  } catch {
+    return null;
   }
-
-  const id = randomUUID();
-  await db.insert(schema.shieldThreats).values({
-    id,
-    urlHash: key,
-    domain,
-    sampleUrl: input.url.slice(0, 500),
-    risk: input.risk,
-    reportCount: "1",
-    source: input.source,
-    reason: input.reason ?? null,
-    firstSeenAt: now,
-    lastSeenAt: now,
-  });
-  return id;
 }
 
 export async function listCommunityThreats(limit = 40) {
-  const db = await getDb();
-  return db
-    .select()
-    .from(schema.shieldThreats)
-    .orderBy(desc(schema.shieldThreats.lastSeenAt))
-    .limit(limit);
+  try {
+    const db = await getDb();
+    return db
+      .select()
+      .from(schema.shieldThreats)
+      .orderBy(desc(schema.shieldThreats.lastSeenAt))
+      .limit(limit);
+  } catch {
+    return [];
+  }
 }
 
 export async function communityStats() {
-  const db = await getDb();
-  const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  try {
+    const db = await getDb();
+    const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
-  const [totalRow] = await db
-    .select({ value: sql<number>`count(*)` })
-    .from(schema.shieldThreats);
+    const [totalRow] = await db
+      .select({ value: sql<number>`count(*)` })
+      .from(schema.shieldThreats);
 
-  const [dayRow] = await db
-    .select({ value: sql<number>`count(*)` })
-    .from(schema.shieldThreats)
-    .where(gte(schema.shieldThreats.lastSeenAt, dayAgo));
+    const [dayRow] = await db
+      .select({ value: sql<number>`count(*)` })
+      .from(schema.shieldThreats)
+      .where(gte(schema.shieldThreats.lastSeenAt, dayAgo));
 
-  const [dangerRow] = await db
-    .select({ value: sql<number>`count(*)` })
-    .from(schema.shieldThreats)
-    .where(eq(schema.shieldThreats.risk, "dangerous"));
+    const [dangerRow] = await db
+      .select({ value: sql<number>`count(*)` })
+      .from(schema.shieldThreats)
+      .where(eq(schema.shieldThreats.risk, "dangerous"));
 
-  const [alertRow] = await db
-    .select({ value: sql<number>`count(*)` })
-    .from(schema.shieldAlerts)
-    .where(gte(schema.shieldAlerts.createdAt, dayAgo));
+    const [alertRow] = await db
+      .select({ value: sql<number>`count(*)` })
+      .from(schema.shieldAlerts)
+      .where(gte(schema.shieldAlerts.createdAt, dayAgo));
 
-  return {
-    knownThreats: Number(totalRow?.value ?? 0),
-    threatsLast24h: Number(dayRow?.value ?? 0),
-    dangerousThreats: Number(dangerRow?.value ?? 0),
-    alertsLast24h: Number(alertRow?.value ?? 0),
-  };
+    return {
+      knownThreats: Number(totalRow?.value ?? 0),
+      threatsLast24h: Number(dayRow?.value ?? 0),
+      dangerousThreats: Number(dangerRow?.value ?? 0),
+      alertsLast24h: Number(alertRow?.value ?? 0),
+    };
+  } catch {
+    return {
+      knownThreats: 0,
+      threatsLast24h: 0,
+      dangerousThreats: 0,
+      alertsLast24h: 0,
+    };
+  }
 }
 
 export async function reportScam(input: {
@@ -139,17 +160,25 @@ export async function reportScam(input: {
 
 /** Export compact blocklist for extensions (domains + hashes) */
 export async function getCommunityBlocklist(limit = 500) {
-  const db = await getDb();
-  const rows = await db
-    .select()
-    .from(schema.shieldThreats)
-    .where(eq(schema.shieldThreats.risk, "dangerous"))
-    .orderBy(desc(schema.shieldThreats.lastSeenAt))
-    .limit(limit);
+  try {
+    const db = await getDb();
+    const rows = await db
+      .select()
+      .from(schema.shieldThreats)
+      .where(eq(schema.shieldThreats.risk, "dangerous"))
+      .orderBy(desc(schema.shieldThreats.lastSeenAt))
+      .limit(limit);
 
-  return {
-    updatedAt: new Date().toISOString(),
-    domains: [...new Set(rows.map((r) => r.domain))],
-    hashes: rows.map((r) => r.urlHash),
-  };
+    return {
+      updatedAt: new Date().toISOString(),
+      domains: [...new Set(rows.map((r) => r.domain))],
+      hashes: rows.map((r) => r.urlHash),
+    };
+  } catch {
+    return {
+      updatedAt: new Date().toISOString(),
+      domains: [] as string[],
+      hashes: [] as string[],
+    };
+  }
 }
