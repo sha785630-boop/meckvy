@@ -1,4 +1,4 @@
-const DEFAULT_API = "http://localhost:3000";
+const DEFAULT_API = "https://meckvy.vercel.app";
 
 chrome.runtime.onInstalled.addListener(async () => {
   const { clientId } = await chrome.storage.local.get("clientId");

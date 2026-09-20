@@ -2,7 +2,7 @@ const apiInput = document.getElementById("apiBase");
 const saveBtn = document.getElementById("save");
 
 chrome.storage.local.get(["apiBase", "clientId"], (data) => {
-  apiInput.value = data.apiBase || "http://localhost:3000";
+  apiInput.value = data.apiBase || "https://meckvy.vercel.app";
 });
 
 saveBtn.addEventListener("click", () => {
