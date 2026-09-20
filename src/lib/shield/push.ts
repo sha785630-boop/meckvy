@@ -49,7 +49,7 @@ export async function notifyClient(input: {
   const payload = JSON.stringify({
     title: input.title,
     body: input.body,
-    url: input.url ?? "/shield/protect",
+    url: input.url ?? "/linkshield/protect",
     risk: input.risk,
   });
 

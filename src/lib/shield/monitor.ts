@@ -75,7 +75,7 @@ export async function monitorMessage(
       clientId: input.clientId,
       title: copy.title,
       body: copy.body,
-      url: `/shield/protect?alert=${alertId}`,
+      url: `/linkshield/protect?alert=${alertId}`,
       risk: urlResult.risk,
     });
     notificationsSent += sent;

@@ -12,6 +12,12 @@ export default function HomePage() {
         </span>
         <div className="animate-fade-in flex items-center gap-2 sm:gap-3">
           <Link
+            href="/linkshield"
+            className="btn-lift hidden rounded-full border border-foam/35 bg-foam/10 px-4 py-2.5 text-sm font-medium text-foam backdrop-blur hover:bg-foam/20 sm:inline-flex"
+          >
+            LinkShield
+          </Link>
+          <Link
             href="/pricing"
             className="btn-lift hidden rounded-full border border-foam/35 bg-foam/10 px-4 py-2.5 text-sm font-medium text-foam backdrop-blur hover:bg-foam/20 sm:inline-flex"
           >

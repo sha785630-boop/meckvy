@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
 
 type Alert = {
   id: string;
@@ -44,9 +45,9 @@ function getClientId(): string {
 }
 
 const RISK_STYLE = {
-  dangerous: "border-red-300 bg-red-50",
-  suspicious: "border-amber-300 bg-amber-50",
-  safe: "border-emerald-300 bg-emerald-50",
+  dangerous: "border-red-500/30 bg-red-500/10",
+  suspicious: "border-amber-500/30 bg-amber-500/10",
+  safe: "border-emerald-500/30 bg-emerald-500/10",
 };
 
 export default function ShieldProtect() {
@@ -130,45 +131,53 @@ export default function ShieldProtect() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-8">
-      <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-ink">Automatic protection</h2>
-        <p className="mt-2 text-sm text-ink/70">
+      <section className="rounded-2xl border border-white/10 bg-[#111] p-6">
+        <h2 className="text-lg font-semibold text-white">Automatic protection</h2>
+        <p className="mt-2 text-sm text-zinc-500">
           Install the LinkShield browser extension. When someone sends you a
           link on WhatsApp Web, Gmail, or Telegram, you get an instant warning —
           no forwarding needed.
         </p>
-        <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm text-ink/80">
-          <li>Open Chrome → Extensions → Manage Extensions</li>
-          <li>Enable Developer mode</li>
-          <li>Click &quot;Load unpacked&quot; → select the{" "}
-            <code className="rounded bg-sand px-1.5 py-0.5 text-xs">extension/linkshield</code>{" "}
-            folder in this project</li>
+        <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm text-zinc-400">
+          <li>
+            Go to{" "}
+            <Link href="/linkshield/install" className="text-red-400 underline">
+              /linkshield/install
+            </Link>{" "}
+            and download the extension
+          </li>
+          <li>Enable Developer mode in Chrome → Load unpacked</li>
           <li>Open WhatsApp Web or Gmail — links are scanned automatically</li>
         </ol>
         <div className="mt-4 flex flex-wrap gap-3">
           <button
             type="button"
             onClick={enablePush}
-            className="rounded-full bg-lagoon px-5 py-2.5 text-sm font-semibold text-foam hover:bg-lagoon-deep"
+            className="rounded-full bg-red-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-400"
           >
-            {pushEnabled ? "Push enabled ✓" : "Enable phone/desktop notifications"}
+            {pushEnabled
+              ? "Push enabled ✓"
+              : "Enable phone/desktop notifications"}
           </button>
         </div>
-        <p className="mt-3 font-mono text-xs text-ink/50">Device ID: {clientId}</p>
+        <p className="mt-3 font-mono text-xs text-zinc-600">
+          Device ID: {clientId}
+        </p>
       </section>
 
       <section>
-        <h2 className="text-lg font-semibold text-ink">Connected apps</h2>
+        <h2 className="text-lg font-semibold text-white">Connected apps</h2>
         {connections.length === 0 ? (
-          <p className="mt-2 text-sm text-ink/60">
-            No apps connected yet. Install the extension and open WhatsApp Web or Gmail.
+          <p className="mt-2 text-sm text-zinc-500">
+            No apps connected yet. Install the extension and open WhatsApp Web
+            or Gmail.
           </p>
         ) : (
           <ul className="mt-3 flex flex-wrap gap-2">
             {connections.map((c) => (
               <li
                 key={c.platform}
-                className="rounded-full border border-lagoon/30 bg-lagoon-mist/40 px-4 py-1.5 text-sm font-medium text-lagoon-deep"
+                className="rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-sm font-medium text-zinc-200"
               >
                 {PLATFORM_LABELS[c.platform] ?? c.platform} ✓
               </li>
@@ -178,48 +187,57 @@ export default function ShieldProtect() {
       </section>
 
       <section>
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-ink">
-            Alerts {unread.length > 0 && `(${unread.length} new)`}
-          </h2>
-        </div>
+        <h2 className="text-lg font-semibold text-white">
+          Alerts {unread.length > 0 && `(${unread.length} new)`}
+        </h2>
         {loading ? (
-          <p className="mt-4 text-sm text-ink/60">Loading…</p>
+          <p className="mt-4 text-sm text-zinc-500">Loading…</p>
         ) : alerts.length === 0 ? (
-          <p className="mt-4 rounded-xl border border-line bg-white p-6 text-sm text-ink/60">
-            No alerts yet. When a suspicious link arrives in a connected app, it will show here.
+          <p className="mt-4 rounded-xl border border-white/10 bg-[#111] p-6 text-sm text-zinc-500">
+            No alerts yet. When a suspicious link arrives in a connected app, it
+            will show here.
           </p>
         ) : (
           <ul className="mt-4 space-y-3">
             {alerts.map((a) => (
               <li
                 key={a.id}
-                className={`rounded-2xl border p-4 ${RISK_STYLE[a.risk]} ${!a.read && a.risk !== "safe" ? "ring-2 ring-coral/40" : ""}`}
+                className={`rounded-2xl border p-4 ${RISK_STYLE[a.risk]} ${!a.read && a.risk !== "safe" ? "ring-2 ring-red-500/40" : ""}`}
               >
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div>
-                    <p className="font-semibold text-ink">
-                      {a.risk === "dangerous" ? "🚨 Scam link" : a.risk === "suspicious" ? "⚠️ Suspicious" : "✅ Safe"}
+                    <p className="font-semibold text-zinc-100">
+                      {a.risk === "dangerous"
+                        ? "🚨 Scam link"
+                        : a.risk === "suspicious"
+                          ? "⚠️ Suspicious"
+                          : "✅ Safe"}
                       {" · "}
                       {PLATFORM_LABELS[a.platform] ?? a.platform}
                     </p>
                     {a.senderHint && (
-                      <p className="text-sm text-ink/70">From: {a.senderHint}</p>
+                      <p className="text-sm text-zinc-500">
+                        From: {a.senderHint}
+                      </p>
                     )}
                   </div>
-                  <span className="text-xs text-ink/50">
+                  <span className="text-xs text-zinc-600">
                     {new Date(a.createdAt).toLocaleString()}
                   </span>
                 </div>
-                <p className="mt-2 truncate font-mono text-xs text-ink/80">{a.url}</p>
+                <p className="mt-2 truncate font-mono text-xs text-zinc-400">
+                  {a.url}
+                </p>
                 {a.flags?.[0] && (
-                  <p className="mt-2 text-sm text-ink/75">{a.flags[0].detail}</p>
+                  <p className="mt-2 text-sm text-zinc-400">
+                    {a.flags[0].detail}
+                  </p>
                 )}
                 {!a.read && a.risk !== "safe" && (
                   <button
                     type="button"
                     onClick={() => markRead(a.id)}
-                    className="mt-3 text-xs font-medium text-lagoon underline"
+                    className="mt-3 text-xs font-medium text-red-400 underline"
                   >
                     Mark as read
                   </button>
@@ -230,11 +248,14 @@ export default function ShieldProtect() {
         )}
       </section>
 
-      <section className="rounded-2xl border border-line bg-sand/40 p-6">
-        <h2 className="text-lg font-semibold text-ink">Mobile apps (coming soon)</h2>
-        <p className="mt-2 text-sm text-ink/70">
-          On Android, LinkShield can watch SMS and app notifications automatically.
-          On iPhone, Apple restricts this — use the browser extension on web apps or share links to LinkShield.
+      <section className="rounded-2xl border border-white/10 bg-[#111] p-6">
+        <h2 className="text-lg font-semibold text-white">
+          Mobile apps (coming soon)
+        </h2>
+        <p className="mt-2 text-sm text-zinc-500">
+          On Android, LinkShield can watch SMS and app notifications
+          automatically. On iPhone, Apple restricts this — use the browser
+          extension on web apps or share links to LinkShield.
         </p>
       </section>
     </div>

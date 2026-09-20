@@ -334,3 +334,22 @@ body {
     transform: none;
   }
 }
+
+/* LinkShield — black product theme */
+.linkshield {
+  --ls-bg: #050505;
+  --ls-surface: #111111;
+  --ls-surface-2: #1a1a1a;
+  --ls-text: #f4f4f5;
+  --ls-muted: #a1a1aa;
+  --ls-line: rgba(255, 255, 255, 0.1);
+  --ls-accent: #f87171;
+  --ls-accent-strong: #ef4444;
+  background: var(--ls-bg);
+  color: var(--ls-text);
+}
+
+.linkshield ::selection {
+  background: rgba(239, 68, 68, 0.35);
+  color: #fff;
+}

@@ -116,6 +116,6 @@ export function formatScanForChat(result: ShieldScanResult): string {
     lines.push("");
   }
 
-  lines.push("Protect others: report scams at /shield");
+  lines.push("Protect others: report scams at /linkshield");
   return lines.join("\n").trim();
 }

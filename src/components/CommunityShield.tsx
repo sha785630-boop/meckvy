@@ -83,23 +83,23 @@ export default function CommunityShield() {
         ].map((s) => (
           <div
             key={s.label}
-            className="rounded-2xl border border-line bg-white px-4 py-4 shadow-sm"
+            className="rounded-2xl border border-white/10 bg-[#111] px-4 py-4"
           >
-            <p className="text-xs font-medium uppercase tracking-wide text-ink/50">
+            <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">
               {s.label}
             </p>
-            <p className="mt-1 font-[family-name:var(--font-display)] text-3xl font-semibold text-ink">
+            <p className="mt-1 font-[family-name:var(--font-display)] text-3xl font-semibold text-white">
               {s.value}
             </p>
           </div>
         ))}
       </div>
 
-      <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
-        <h2 className="font-[family-name:var(--font-display)] text-xl font-semibold text-ink">
+      <section className="rounded-2xl border border-white/10 bg-[#111] p-6">
+        <h2 className="font-[family-name:var(--font-display)] text-xl font-semibold text-white">
           Report a scam — protect everyone
         </h2>
-        <p className="mt-2 text-sm text-ink/70">
+        <p className="mt-2 text-sm text-zinc-500">
           When you report a phishing link, LinkShield adds it to the community
           blocklist. Everyone with the extension gets protected automatically.
         </p>
@@ -108,37 +108,36 @@ export default function CommunityShield() {
             value={reportUrl}
             onChange={(e) => setReportUrl(e.target.value)}
             placeholder="Paste the scam URL"
-            className="w-full rounded-xl border border-line bg-foam px-4 py-3 text-sm outline-none ring-lagoon/30 focus:ring-2"
+            className="w-full rounded-xl border border-white/10 bg-black px-4 py-3 text-sm text-zinc-100 outline-none ring-red-500/30 placeholder:text-zinc-600 focus:ring-2"
           />
           <input
             value={reportNote}
             onChange={(e) => setReportNote(e.target.value)}
             placeholder="Optional: what happened? (e.g. fake PayPal login)"
-            className="w-full rounded-xl border border-line bg-foam px-4 py-3 text-sm outline-none ring-lagoon/30 focus:ring-2"
+            className="w-full rounded-xl border border-white/10 bg-black px-4 py-3 text-sm text-zinc-100 outline-none ring-red-500/30 placeholder:text-zinc-600 focus:ring-2"
           />
           <button
             type="submit"
             disabled={loading || !reportUrl.trim()}
-            className="rounded-full bg-coral px-6 py-3 text-sm font-semibold text-foam hover:brightness-110 disabled:opacity-50"
+            className="rounded-full bg-red-500 px-6 py-3 text-sm font-semibold text-white hover:bg-red-400 disabled:opacity-50"
           >
             {loading ? "Reporting…" : "Report to community"}
           </button>
         </form>
-        {status && (
-          <p className="mt-3 text-sm text-lagoon-deep">{status}</p>
-        )}
+        {status && <p className="mt-3 text-sm text-zinc-300">{status}</p>}
       </section>
 
       <section>
-        <h2 className="font-[family-name:var(--font-display)] text-xl font-semibold text-ink">
+        <h2 className="font-[family-name:var(--font-display)] text-xl font-semibold text-white">
           Live community threat feed
         </h2>
-        <p className="mt-1 text-sm text-ink/60">
+        <p className="mt-1 text-sm text-zinc-500">
           Domains the community (and auto-detection) recently flagged.
         </p>
         {threats.length === 0 ? (
-          <p className="mt-4 rounded-xl border border-line bg-white p-5 text-sm text-ink/60">
-            No threats shared yet. Scan or report a scam link to start protecting the community.
+          <p className="mt-4 rounded-xl border border-white/10 bg-[#111] p-5 text-sm text-zinc-500">
+            No threats shared yet. Scan or report a scam link to start protecting
+            the community.
           </p>
         ) : (
           <ul className="mt-4 space-y-2">
@@ -147,21 +146,21 @@ export default function CommunityShield() {
                 key={t.id}
                 className={`flex flex-wrap items-center justify-between gap-2 rounded-xl border px-4 py-3 text-sm ${
                   t.risk === "dangerous"
-                    ? "border-red-200 bg-red-50"
-                    : "border-amber-200 bg-amber-50"
+                    ? "border-red-500/30 bg-red-500/10"
+                    : "border-amber-500/30 bg-amber-500/10"
                 }`}
               >
                 <div className="min-w-0">
-                  <p className="truncate font-mono font-medium text-ink">
+                  <p className="truncate font-mono font-medium text-zinc-100">
                     {t.domain}
                   </p>
-                  <p className="text-ink/65">
+                  <p className="text-zinc-500">
                     {t.reason || "Flagged as risky"} · {t.reportCount} report
                     {t.reportCount === 1 ? "" : "s"}
                   </p>
                 </div>
-                <div className="text-right text-xs text-ink/50">
-                  <p className="font-semibold uppercase tracking-wide text-ink/70">
+                <div className="text-right text-xs text-zinc-500">
+                  <p className="font-semibold uppercase tracking-wide text-zinc-300">
                     {t.risk}
                   </p>
                   <p>{new Date(t.lastSeenAt).toLocaleString()}</p>

@@ -1,5 +1,5 @@
 self.addEventListener("push", (event) => {
-  let data = { title: "LinkShield", body: "New alert", url: "/shield/protect", risk: "suspicious" };
+  let data = { title: "LinkShield", body: "New alert", url: "/linkshield/protect", risk: "suspicious" };
   try {
     data = { ...data, ...event.data?.json() };
   } catch {
@@ -20,6 +20,6 @@ self.addEventListener("push", (event) => {
 
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
-  const url = event.notification.data?.url || "/shield/protect";
+  const url = event.notification.data?.url || "/linkshield/protect";
   event.waitUntil(clients.openWindow(url));
 });
