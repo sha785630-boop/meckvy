@@ -85,6 +85,63 @@ async function ensureSchema(client: Client) {
     CREATE INDEX IF NOT EXISTS idx_messages_received_at ON messages(received_at);
     CREATE INDEX IF NOT EXISTS idx_messages_thread ON messages(thread_id);
     CREATE INDEX IF NOT EXISTS idx_messages_gh ON messages(guesthouse_id);
+
+    CREATE TABLE IF NOT EXISTS shield_clients (
+      id TEXT PRIMARY KEY NOT NULL,
+      user_id TEXT,
+      label TEXT NOT NULL DEFAULT 'My device',
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS shield_connections (
+      id TEXT PRIMARY KEY NOT NULL,
+      client_id TEXT NOT NULL,
+      platform TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'active',
+      connected_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS shield_alerts (
+      id TEXT PRIMARY KEY NOT NULL,
+      client_id TEXT NOT NULL,
+      platform TEXT NOT NULL,
+      sender_hint TEXT,
+      message_preview TEXT,
+      url TEXT NOT NULL,
+      risk TEXT NOT NULL,
+      score TEXT NOT NULL,
+      flags_json TEXT NOT NULL,
+      read TEXT NOT NULL DEFAULT '0',
+      created_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS shield_push_subscriptions (
+      id TEXT PRIMARY KEY NOT NULL,
+      client_id TEXT NOT NULL,
+      endpoint TEXT NOT NULL UNIQUE,
+      p256dh TEXT NOT NULL,
+      auth TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_shield_alerts_client ON shield_alerts(client_id);
+    CREATE INDEX IF NOT EXISTS idx_shield_connections_client ON shield_connections(client_id);
+
+    CREATE TABLE IF NOT EXISTS shield_threats (
+      id TEXT PRIMARY KEY NOT NULL,
+      url_hash TEXT NOT NULL UNIQUE,
+      domain TEXT NOT NULL,
+      sample_url TEXT NOT NULL,
+      risk TEXT NOT NULL,
+      report_count TEXT NOT NULL DEFAULT '1',
+      source TEXT NOT NULL,
+      reason TEXT,
+      first_seen_at TEXT NOT NULL,
+      last_seen_at TEXT NOT NULL
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_shield_threats_domain ON shield_threats(domain);
+    CREATE INDEX IF NOT EXISTS idx_shield_threats_last_seen ON shield_threats(last_seen_at);
   `);
 
   // Best-effort migrations for older local DBs

@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "LinkShield — Phishing Protection",
+  "version": "2.0.0",
+  "description": "Blocks scam links in WhatsApp, Gmail, Telegram. Community threat sharing keeps everyone safer.",
+  "permissions": ["storage", "notifications", "alarms"],
+  "host_permissions": [
+    "http://localhost:3000/*",
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://web.whatsapp.com/*",
+        "https://web.telegram.org/*",
+        "https://mail.google.com/*",
+        "https://www.messenger.com/*",
+        "https://www.instagram.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "LinkShield",
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "128": "icon.svg"
+  }
+}

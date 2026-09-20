@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        width: 300px;
+        font-family: system-ui, sans-serif;
+        margin: 0;
+        padding: 16px;
+        background: #142526;
+        color: #faf8f4;
+      }
+      h1 { font-size: 16px; margin: 0 0 8px; }
+      p { font-size: 12px; opacity: 0.8; margin: 0 0 12px; line-height: 1.4; }
+      .status {
+        font-size: 12px; padding: 8px; background: #0d6b6e;
+        border-radius: 8px; font-weight: 600;
+      }
+      .feats { font-size: 11px; opacity: 0.75; margin: 10px 0 0; line-height: 1.5; }
+      label { font-size: 11px; display: block; margin-top: 12px; opacity: 0.7; }
+      input {
+        width: 100%; box-sizing: border-box; margin-top: 4px;
+        padding: 6px 8px; border-radius: 6px; border: none; font-size: 12px;
+      }
+      button {
+        margin-top: 10px; width: 100%; padding: 8px;
+        background: #d4654a; color: #fff; border: none; border-radius: 8px;
+        font-weight: 600; cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🛡️ LinkShield Strong</h1>
+    <p>Auto-scans messages, blocks scam clicks, and shares threats with the community.</p>
+    <div class="status" id="status">Protection active</div>
+    <p class="feats">✓ Click blocking · ✓ Community blocklist · ✓ Instant alerts</p>
+    <label>API server</label>
+    <input id="apiBase" type="text" placeholder="http://localhost:3000" />
+    <button id="save">Save</button>
+    <script src="popup.js"></script>
+  </body>
+</html>

@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/pack-extension.js && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "pack:extension": "node scripts/pack-extension.js"
   },
   "dependencies": {
     "@libsql/client": "^0.17.4",
@@ -17,7 +18,8 @@
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "resend": "^6.18.1",
-    "stripe": "^22.4.0"
+    "stripe": "^22.4.0",
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -25,6 +27,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/web-push": "^3.6.4",
     "drizzle-kit": "^0.31.10",
     "eslint": "^9",
     "eslint-config-next": "16.3.0",
