@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { HomeReviews } from "@/components/HomeReviews";
 import { Reveal } from "@/components/Reveal";
 import { ProductPreview } from "@/components/ProductPreview";
 
@@ -11,6 +12,12 @@ export default function HomePage() {
           Meckvy
         </span>
         <div className="animate-fade-in flex items-center gap-2 sm:gap-3">
+          <Link
+            href="/reviews"
+            className="btn-lift hidden rounded-full border border-foam/35 bg-foam/10 px-4 py-2.5 text-sm font-medium text-foam backdrop-blur hover:bg-foam/20 sm:inline-flex"
+          >
+            Reviews
+          </Link>
           <Link
             href="/pricing"
             className="btn-lift hidden rounded-full border border-foam/35 bg-foam/10 px-4 py-2.5 text-sm font-medium text-foam backdrop-blur hover:bg-foam/20 sm:inline-flex"
@@ -150,16 +157,16 @@ export default function HomePage() {
               Live in one afternoon
             </h2>
             <p className="mt-4 max-w-xl text-foam/70">
-              No Meta WhatsApp setup required to start. Paste the widget, open
-              Inbox, take bookings.
+              No developer needed. No website? No problem — share your Meckvy
+              link or QR code on Instagram, Facebook and Google Maps.
             </p>
           </Reveal>
           <ol className="mt-14 space-y-0">
             {[
               {
                 n: "1",
-                t: "Paste the widget",
-                d: "One script on their website — or share a direct link / QR.",
+                t: "Share your link",
+                d: "Copy your link or QR in one click — or follow the step-by-step guide for WordPress, Wix, Squarespace and more.",
               },
               {
                 n: "2",
@@ -186,6 +193,8 @@ export default function HomePage() {
         </div>
       </section>
 
+      <HomeReviews />
+
       {/* Pricing tease */}
       <section className="lagoon-band px-6 py-20 md:px-10 md:py-28">
         <div className="mx-auto max-w-5xl">
@@ -195,7 +204,8 @@ export default function HomePage() {
             </h2>
             <p className="mt-4 max-w-xl text-lg text-ink-soft">
               Starter is $29/month. Pro is $59 with email replies and
-              automations. Cancel anytime.
+              automations. Free trial, no card, cancel anytime. Invite another
+              guesthouse and you both get a month free.
             </p>
           </Reveal>
           <Reveal delay={1} className="mt-10 flex flex-wrap gap-8">
@@ -263,6 +273,9 @@ export default function HomePage() {
             Meckvy
           </span>
           <nav className="flex flex-wrap items-center gap-5">
+            <Link href="/reviews" className="hover:text-ink">
+              Reviews
+            </Link>
             <Link href="/pricing" className="hover:text-ink">
               Pricing
             </Link>

@@ -14,7 +14,9 @@ function RegisterForm() {
     guesthouseName: params.get("guesthouse") ?? "",
     island: params.get("island") ?? "",
     plan: (params.get("plan") as "starter" | "pro") || "starter",
+    ref: params.get("ref") ?? "",
   });
+  const invited = Boolean(form.ref);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -45,6 +47,12 @@ function RegisterForm() {
       onSubmit={(e) => void onSubmit(e)}
       className="mt-8 space-y-4 rounded-2xl border border-line bg-foam p-6"
     >
+      {invited && (
+        <p className="rounded-xl bg-lagoon-mist/50 px-4 py-3 text-sm text-lagoon-deep">
+          You were invited by another guesthouse — your first paid month is
+          free.
+        </p>
+      )}
       {(
         [
           ["name", "Your name", "Ahmed"],

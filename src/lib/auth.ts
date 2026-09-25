@@ -75,6 +75,7 @@ export async function registerAccount(input: {
   guesthouseName: string;
   island: string;
   plan?: string;
+  referredBy?: string;
 }): Promise<SessionPayload> {
   const email = input.email.trim().toLowerCase();
   if (await findUserByEmail(email)) {
@@ -88,6 +89,17 @@ export async function registerAccount(input: {
   const now = new Date().toISOString();
   const userId = `user-${Date.now()}`;
   const guesthouseId = `gh-${Date.now()}`;
+
+  let referredBy: string | null = null;
+  const refId = input.referredBy?.trim();
+  if (refId && refId !== DEMO_GUESTHOUSE_ID) {
+    const referrer = await db
+      .select({ id: schema.guesthouses.id })
+      .from(schema.guesthouses)
+      .where(eq(schema.guesthouses.id, refId))
+      .limit(1);
+    referredBy = referrer[0]?.id ?? null;
+  }
 
   await db.insert(schema.users).values({
     id: userId,
@@ -107,6 +119,7 @@ export async function registerAccount(input: {
     stripeCustomerId: null,
     stripeSubscriptionId: null,
     whatsappNumber: null,
+    referredBy,
     createdAt: now,
   });
 

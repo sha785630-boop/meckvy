@@ -90,6 +90,19 @@ async function ensureSchema(client: Client) {
       notes TEXT
     );
 
+    CREATE TABLE IF NOT EXISTS reviews (
+      id TEXT PRIMARY KEY NOT NULL,
+      guesthouse_id TEXT NOT NULL UNIQUE,
+      author_name TEXT NOT NULL,
+      guesthouse_name TEXT NOT NULL,
+      island TEXT NOT NULL,
+      rating INTEGER NOT NULL,
+      body TEXT NOT NULL,
+      hidden INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+
     CREATE INDEX IF NOT EXISTS idx_messages_received_at ON messages(received_at);
     CREATE INDEX IF NOT EXISTS idx_messages_thread ON messages(thread_id);
     CREATE INDEX IF NOT EXISTS idx_messages_gh ON messages(guesthouse_id);
@@ -159,6 +172,7 @@ async function ensureSchema(client: Client) {
     `ALTER TABLE guesthouses ADD COLUMN stripe_customer_id TEXT`,
     `ALTER TABLE guesthouses ADD COLUMN stripe_subscription_id TEXT`,
     `ALTER TABLE guesthouses ADD COLUMN whatsapp_number TEXT`,
+    `ALTER TABLE guesthouses ADD COLUMN referred_by TEXT`,
   ];
   for (const sql of alterStatements) {
     try {
@@ -196,6 +210,7 @@ async function seedDemoAccount(db: AppDb) {
       stripeCustomerId: null,
       stripeSubscriptionId: null,
       whatsappNumber: null,
+      referredBy: null,
       createdAt: now,
     });
   }

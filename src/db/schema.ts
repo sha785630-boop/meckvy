@@ -1,4 +1,4 @@
-import { sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const users = sqliteTable("users", {
   id: text("id").primaryKey(),
@@ -18,7 +18,22 @@ export const guesthouses = sqliteTable("guesthouses", {
   stripeCustomerId: text("stripe_customer_id"),
   stripeSubscriptionId: text("stripe_subscription_id"),
   whatsappNumber: text("whatsapp_number"),
+  referredBy: text("referred_by"),
   createdAt: text("created_at").notNull(),
+});
+
+/** One public review per guesthouse; owners can edit theirs */
+export const reviews = sqliteTable("reviews", {
+  id: text("id").primaryKey(),
+  guesthouseId: text("guesthouse_id").notNull().unique(),
+  authorName: text("author_name").notNull(),
+  guesthouseName: text("guesthouse_name").notNull(),
+  island: text("island").notNull(),
+  rating: integer("rating").notNull(),
+  body: text("body").notNull(),
+  hidden: integer("hidden").notNull().default(0),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
 });
 
 export const messages = sqliteTable("messages", {
@@ -108,6 +123,7 @@ export type UserRow = typeof users.$inferSelect;
 export type GuesthouseRow = typeof guesthouses.$inferSelect;
 export type MessageRow = typeof messages.$inferSelect;
 export type SignupLeadRow = typeof signupLeads.$inferSelect;
+export type ReviewRow = typeof reviews.$inferSelect;
 export type ShieldClientRow = typeof shieldClients.$inferSelect;
 export type ShieldAlertRow = typeof shieldAlerts.$inferSelect;
 export type ShieldThreatRow = typeof shieldThreats.$inferSelect;

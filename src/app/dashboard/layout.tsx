@@ -1,13 +1,16 @@
 import Link from "next/link";
+import { isAdminEmail } from "@/lib/admin";
 import { getSession } from "@/lib/auth";
 import { LogoutButton } from "@/components/LogoutButton";
 
 const NAV = [
   { href: "/dashboard", label: "Overview" },
   { href: "/dashboard/inbox", label: "Inbox" },
+  { href: "/dashboard/connect", label: "Connect website" },
   { href: "/dashboard/templates", label: "Templates" },
   { href: "/dashboard/automations", label: "Automations" },
-  { href: "/dashboard/leads", label: "Signups" },
+  { href: "/dashboard/invite", label: "Invite & earn" },
+  { href: "/dashboard/review", label: "Leave a review" },
   { href: "/dashboard/settings", label: "Settings" },
 ];
 
@@ -17,6 +20,9 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const session = await getSession();
+  const nav = isAdminEmail(session?.email)
+    ? [...NAV, { href: "/dashboard/leads", label: "Admin" }]
+    : NAV;
 
   return (
     <div className="sand-glow flex min-h-screen flex-col bg-sand md:flex-row">
@@ -30,7 +36,7 @@ export default async function DashboardLayout({
           </Link>
         </div>
         <nav className="flex gap-1 overflow-x-auto px-3 pb-4 md:flex-col md:overflow-visible">
-          {NAV.map((item) => (
+          {nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}

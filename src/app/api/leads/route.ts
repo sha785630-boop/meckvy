@@ -1,13 +1,39 @@
 import { NextResponse } from "next/server";
-import { getSession } from "@/lib/auth";
+import { desc } from "drizzle-orm";
+import { getDb, schema } from "@/db";
+import { getAdminSession } from "@/lib/admin";
 import { listSignupLeads } from "@/lib/leads";
 
 export const runtime = "nodejs";
 
 export async function GET() {
-  const session = await getSession();
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const admin = await getAdminSession();
+  if (!admin) {
+    return NextResponse.json({ error: "Admins only" }, { status: 403 });
   }
-  return NextResponse.json({ leads: await listSignupLeads() });
+
+  const db = await getDb();
+  const accounts = await db
+    .select({
+      id: schema.guesthouses.id,
+      name: schema.guesthouses.name,
+      island: schema.guesthouses.island,
+      plan: schema.guesthouses.plan,
+      planStatus: schema.guesthouses.planStatus,
+      referredBy: schema.guesthouses.referredBy,
+      createdAt: schema.guesthouses.createdAt,
+    })
+    .from(schema.guesthouses)
+    .orderBy(desc(schema.guesthouses.createdAt));
+
+  const reviews = await db
+    .select()
+    .from(schema.reviews)
+    .orderBy(desc(schema.reviews.updatedAt));
+
+  return NextResponse.json({
+    leads: await listSignupLeads(),
+    accounts,
+    reviews,
+  });
 }

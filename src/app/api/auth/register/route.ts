@@ -16,6 +16,7 @@ export async function POST(request: Request) {
       guesthouseName?: string;
       island?: string;
       plan?: string;
+      ref?: string;
     };
 
     if (
@@ -38,6 +39,7 @@ export async function POST(request: Request) {
       guesthouseName: body.guesthouseName,
       island: body.island,
       plan: body.plan,
+      referredBy: body.ref,
     });
 
     const token = await createSessionToken(session);

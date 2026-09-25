@@ -197,48 +197,16 @@ export default function SettingsPage() {
           </p>
           <h2 className="mt-1 text-lg font-semibold text-ink">Website widget</h2>
           <p className="mt-2 text-sm text-ink-soft">
-            1) Paste the snippet on their website · 2) Guest sends an inquiry ·
-            3) You reply in{" "}
-            <a href="/dashboard/inbox" className="font-medium text-lagoon-deep underline">
-              Inbox
-            </a>
-            .
+            Share your page link or QR, or add a “Message us” button to your
+            website with step-by-step guides for WordPress, Wix, Squarespace,
+            Shopify and Google Sites.
           </p>
-          <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-ink-soft">
-            Direct page link (share or QR)
-          </p>
-          <code className="mt-1 block break-all rounded-xl bg-sand px-3 py-2 text-xs text-ink">
-            {origin}/widget/{goLive.guesthouseId}
-          </code>
-          <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-ink-soft">
-            Paste this before &lt;/body&gt; on their website
-          </p>
-          <pre className="mt-1 overflow-x-auto rounded-xl bg-ink px-3 py-3 text-[11px] leading-relaxed text-foam">
-{`<script
-  src="${origin}/embed.js"
-  data-guesthouse="${goLive.guesthouseId}"
-  data-base="${origin}"
-  async
-></script>`}
-          </pre>
-          <p className="mt-3 text-xs text-ink-soft">
-            Or embed with iframe:
-          </p>
-          <pre className="mt-1 overflow-x-auto rounded-xl bg-ink px-3 py-3 text-[11px] leading-relaxed text-foam">
-{`<iframe
-  src="${origin}/widget/${goLive.guesthouseId}?embed=1"
-  title="Contact"
-  style="width:100%;height:560px;border:0;border-radius:16px;"
-></iframe>`}
-          </pre>
           <div className="mt-4 flex flex-wrap gap-2">
             <a
-              href={`/widget/${goLive.guesthouseId}`}
-              target="_blank"
-              rel="noreferrer"
+              href="/dashboard/connect"
               className="inline-flex rounded-full bg-lagoon px-4 py-2 text-sm font-semibold text-foam hover:bg-lagoon-deep"
             >
-              Open widget preview
+              Connect your website
             </a>
             <a
               href="/dashboard/inbox"
