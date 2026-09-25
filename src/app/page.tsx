@@ -268,7 +268,18 @@ export default function HomePage() {
           <span className="font-[family-name:var(--font-display)] text-lg font-semibold text-ink">
             Meckvy
           </span>
-          <span>Guesthouse automation · Maldives</span>
+          <nav className="flex flex-wrap items-center gap-5">
+            <Link href="/pricing" className="hover:text-ink">
+              Pricing
+            </Link>
+            <Link href="/privacy" className="hover:text-ink">
+              Privacy
+            </Link>
+            <Link href="/terms" className="hover:text-ink">
+              Terms
+            </Link>
+            <span>Guesthouse automation · Maldives</span>
+          </nav>
         </div>
       </footer>
     </main>

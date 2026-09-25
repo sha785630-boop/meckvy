@@ -211,6 +211,17 @@ export default function PricingPage() {
             Sign in
           </Link>
         </p>
+        <p className="mt-2 text-xs text-ink-soft">
+          By subscribing you agree to our{" "}
+          <Link href="/terms" className="text-lagoon-deep underline">
+            Terms
+          </Link>{" "}
+          and{" "}
+          <Link href="/privacy" className="text-lagoon-deep underline">
+            Privacy Policy
+          </Link>
+          .
+        </p>
 
         <form
           onSubmit={(e) => void submit(e)}
