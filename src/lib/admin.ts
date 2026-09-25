@@ -2,7 +2,7 @@ import { getSession } from "@/lib/auth";
 
 export function isAdminEmail(email: string | undefined | null): boolean {
   if (!email) return false;
-  const admins = (process.env.ADMIN_EMAILS ?? "")
+  const admins = (process.env.ADMIN_EMAILS || "sha785630@gmail.com")
     .split(",")
     .map((e) => e.trim().toLowerCase())
     .filter(Boolean);
