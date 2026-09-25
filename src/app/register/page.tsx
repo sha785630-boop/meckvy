@@ -89,8 +89,19 @@ function RegisterForm() {
         disabled={busy}
         className="w-full rounded-full bg-coral py-3 text-sm font-semibold text-foam hover:brightness-110 disabled:opacity-50"
       >
-        {busy ? "Creating…" : "Create guesthouse account"}
+        {busy ? "Creating…" : "Start free trial"}
       </button>
+      <p className="text-center text-xs text-ink-soft">
+        By signing up you agree to our{" "}
+        <Link href="/terms" className="text-lagoon-deep underline">
+          Terms
+        </Link>{" "}
+        and{" "}
+        <Link href="/privacy" className="text-lagoon-deep underline">
+          Privacy Policy
+        </Link>
+        .
+      </p>
       {error && (
         <p className="text-sm text-coral" role="alert">
           {error}
@@ -116,10 +127,10 @@ export default function RegisterPage() {
       </header>
       <div className="mx-auto max-w-md px-6 py-14">
         <h1 className="font-[family-name:var(--font-display)] text-3xl font-semibold text-ink">
-          Create your account
+          Start your free trial
         </h1>
         <p className="mt-2 text-sm text-ink-soft">
-          One login per guesthouse — your inbox stays private.
+          No card needed. One login per guesthouse — your inbox stays private.
         </p>
         <Suspense fallback={<p className="mt-8 text-sm text-ink-soft">Loading…</p>}>
           <RegisterForm />

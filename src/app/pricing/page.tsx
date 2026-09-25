@@ -155,8 +155,9 @@ export default function PricingPage() {
           Start taking more bookings — from $29/month
         </h1>
         <p className="animate-fade-up-delay mt-3 max-w-2xl text-lg text-ink-soft">
-          One lost enquiry costs more than a month of Meckvy. Pick a plan, try
-          the demo, paste the widget on their site.
+          One lost enquiry costs more than a month of Meckvy. Start a free
+          trial, put the widget on your website, and answer every guest from one
+          inbox.
         </p>
 
         <div className="animate-fade-up-delay-2 mt-10 grid gap-4 md:grid-cols-2">
@@ -187,14 +188,23 @@ export default function PricingPage() {
                   ))}
                 </ul>
               </button>
-              <button
-                type="button"
-                disabled={payBusy}
-                onClick={() => void payWithStripe(p.id)}
-                className="mt-5 w-full rounded-full bg-lagoon py-2.5 text-sm font-semibold text-foam hover:bg-lagoon-deep disabled:opacity-50"
-              >
-                {payBusy ? "Redirecting…" : `Pay ${p.price} with Stripe`}
-              </button>
+              {stripeReady ? (
+                <button
+                  type="button"
+                  disabled={payBusy}
+                  onClick={() => void payWithStripe(p.id)}
+                  className="btn-lift mt-5 w-full rounded-full bg-lagoon py-2.5 text-sm font-semibold text-foam hover:bg-lagoon-deep disabled:opacity-50"
+                >
+                  {payBusy ? "Redirecting…" : `Subscribe — ${p.price}`}
+                </button>
+              ) : (
+                <Link
+                  href={`/register?plan=${p.id}`}
+                  className="btn-lift mt-5 block w-full rounded-full bg-lagoon py-2.5 text-center text-sm font-semibold text-foam hover:bg-lagoon-deep"
+                >
+                  Start free trial
+                </Link>
+              )}
             </div>
           ))}
         </div>
@@ -203,16 +213,20 @@ export default function PricingPage() {
             {payError}
           </p>
         )}
-        <p className="mt-3 text-xs text-ink-soft">
-          {stripeReady
-            ? "Stripe is connected. You must be signed in to checkout."
-            : "Add STRIPE_SECRET_KEY to .env.local to enable card payments."}{" "}
-          <Link href="/login?next=/pricing" className="text-lagoon-deep underline">
-            Sign in
-          </Link>
+        <p className="mt-3 text-sm text-ink-soft">
+          {stripeReady ? (
+            <>
+              Sign in first, then subscribe by card.{" "}
+              <Link href="/login?next=/pricing" className="text-lagoon-deep underline">
+                Sign in
+              </Link>
+            </>
+          ) : (
+            "Free trial, no card needed. After the trial, pay monthly by BML bank transfer — we send you an invoice."
+          )}
         </p>
         <p className="mt-2 text-xs text-ink-soft">
-          By subscribing you agree to our{" "}
+          By signing up you agree to our{" "}
           <Link href="/terms" className="text-lagoon-deep underline">
             Terms
           </Link>{" "}

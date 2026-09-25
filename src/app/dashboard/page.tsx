@@ -67,15 +67,15 @@ export default async function DashboardPage() {
       {planStatus !== "active" && (
         <section className="mt-6 rounded-2xl border border-coral/30 bg-foam p-5">
           <p className="text-sm text-ink-soft">
-            Your subscription is{" "}
-            <span className="font-medium text-ink">{planStatus}</span>.
-            Subscribe on the pricing page to activate card billing.
+            {planStatus === "trialing"
+              ? "You’re on a free trial. Next step: put the website widget on your site so guest enquiries start arriving here."
+              : `Your subscription is ${planStatus}. Contact us to renew — we invoice monthly by BML bank transfer.`}
           </p>
           <Link
-            href="/pricing"
+            href="/dashboard/settings"
             className="mt-3 inline-flex rounded-full bg-coral px-5 py-2 text-sm font-semibold text-foam"
           >
-            Subscribe with Stripe
+            Set up website widget
           </Link>
         </section>
       )}

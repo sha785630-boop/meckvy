@@ -236,28 +236,28 @@ export default function HomePage() {
         <div className="relative mx-auto max-w-5xl text-center">
           <Reveal>
             <p className="font-[family-name:var(--font-display)] text-4xl font-semibold text-foam md:text-6xl">
-              Ready to sell quieter days?
+              Ready for quieter days?
             </p>
             <p className="mx-auto mt-5 max-w-lg text-lg text-foam/80">
-              Demo login is ready — show a guesthouse owner today and close
-              this week.
+              Start free — put the widget on your website today and answer your
+              next guest from Meckvy.
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
               <Link
-                href="/login"
+                href="/register"
                 className="btn-lift rounded-full bg-foam px-8 py-4 text-base font-semibold text-lagoon-deep hover:bg-white"
               >
-                Start demo now
+                Start free trial
               </Link>
               <Link
-                href="/pricing"
+                href="/login"
                 className="btn-lift rounded-full border border-foam/40 px-8 py-4 text-base font-medium text-foam hover:bg-foam/10"
               >
-                View pricing
+                Try the demo
               </Link>
             </div>
             <p className="mt-8 text-sm text-foam/60">
-              Demo: demo@meckvy.mv · demo1234
+              No card needed · Demo login: demo@meckvy.mv / demo1234
             </p>
           </Reveal>
         </div>
