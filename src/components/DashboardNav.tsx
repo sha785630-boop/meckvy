@@ -38,6 +38,7 @@ export function DashboardNav({ unread, isAdmin }: { unread: number; isAdmin: boo
     {
       title: "Account",
       items: [
+        { href: "/dashboard/app", label: "Get the app", icon: "📱" },
         { href: "/dashboard/settings", label: "Settings", icon: "⚙️" },
         ...(isAdmin ? [{ href: "/dashboard/leads", label: "Admin", icon: "🛡️" }] : []),
       ],

@@ -47,6 +47,16 @@ export const photos = sqliteTable("photos", {
   createdAt: text("created_at").notNull(),
 });
 
+/** Owner devices that get a push notification for each new guest message */
+export const ownerPushSubscriptions = sqliteTable("owner_push_subscriptions", {
+  id: text("id").primaryKey(),
+  guesthouseId: text("guesthouse_id").notNull(),
+  endpoint: text("endpoint").notNull().unique(),
+  p256dh: text("p256dh").notNull(),
+  auth: text("auth").notNull(),
+  createdAt: text("created_at").notNull(),
+});
+
 export const messages = sqliteTable("messages", {
   id: text("id").primaryKey(),
   guesthouseId: text("guesthouse_id").notNull(),

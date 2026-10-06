@@ -112,6 +112,16 @@ async function ensureSchema(client: Client) {
     );
     CREATE INDEX IF NOT EXISTS idx_photos_gh ON photos(guesthouse_id);
 
+    CREATE TABLE IF NOT EXISTS owner_push_subscriptions (
+      id TEXT PRIMARY KEY NOT NULL,
+      guesthouse_id TEXT NOT NULL,
+      endpoint TEXT NOT NULL UNIQUE,
+      p256dh TEXT NOT NULL,
+      auth TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_owner_push_gh ON owner_push_subscriptions(guesthouse_id);
+
     CREATE INDEX IF NOT EXISTS idx_messages_received_at ON messages(received_at);
     CREATE INDEX IF NOT EXISTS idx_messages_thread ON messages(thread_id);
     CREATE INDEX IF NOT EXISTS idx_messages_gh ON messages(guesthouse_id);

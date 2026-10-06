@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0d6b6e" />
+    <title>Meckvy — offline</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: system-ui, -apple-system, sans-serif;
+        background: linear-gradient(180deg, #faf8f4, #f3efe6);
+        color: #142526;
+        text-align: center;
+        padding: 24px;
+      }
+      .logo {
+        width: 72px;
+        height: 72px;
+        border-radius: 20px;
+        margin: 0 auto 20px;
+      }
+      h1 {
+        font-family: Georgia, serif;
+        font-size: 28px;
+        margin: 0 0 8px;
+      }
+      p {
+        color: #2a3f40;
+        margin: 0 0 24px;
+      }
+      button {
+        background: #0d6b6e;
+        color: #faf8f4;
+        border: 0;
+        border-radius: 999px;
+        padding: 12px 28px;
+        font-size: 15px;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <img class="logo" src="/app-icon/192" alt="" onerror="this.style.display='none'" />
+      <h1>You’re offline</h1>
+      <p>Island internet dropped for a moment. Your messages are safe —<br />try again when you’re back online.</p>
+      <button onclick="location.reload()">Try again</button>
+    </main>
+  </body>
+</html>

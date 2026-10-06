@@ -89,7 +89,7 @@ export default function ShieldProtect() {
     const perm = await Notification.requestPermission();
     if (perm !== "granted") return;
 
-    const reg = await navigator.serviceWorker.register("/shield-sw.js");
+    const reg = await navigator.serviceWorker.register("/sw.js");
     const keyRes = await fetch("/api/shield/push");
     const { publicKey } = await keyRes.json();
     if (!publicKey) {

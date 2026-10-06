@@ -1,5 +1,6 @@
 import { and, desc, eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
+import { notifyOwner } from "./owner-push";
 import type { GuestMessage } from "./types";
 
 function rowToMessage(row: typeof schema.messages.$inferSelect): GuestMessage {
@@ -88,6 +89,14 @@ export async function upsertInbound(
     receivedAt: message.receivedAt,
     threadId: message.threadId,
   });
+
+  if (message.status === "unread") {
+    await notifyOwner(guesthouseId, {
+      title: `💬 New enquiry from ${message.guestName}`,
+      body: message.body.replace(/\s+/g, " ").slice(0, 120),
+      url: "/dashboard/inbox",
+    });
+  }
 
   return message;
 }

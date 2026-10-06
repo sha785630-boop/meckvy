@@ -1,5 +1,6 @@
 import { eq } from "drizzle-orm";
 import Link from "next/link";
+import { AppPromo } from "@/components/AppPromo";
 import { getDb, schema } from "@/db";
 import { getSession } from "@/lib/auth";
 import { getPublicGuesthouse } from "@/lib/guesthouse-page";
@@ -120,6 +121,8 @@ export default async function DashboardPage() {
             : "Your guesthouse communications at a glance."}
         </p>
       </header>
+
+      <AppPromo />
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         {[

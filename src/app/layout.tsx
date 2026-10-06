@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fraunces, Outfit } from "next/font/google";
+import { AppRuntime } from "@/components/AppRuntime";
 import "./globals.css";
 
 const display = Fraunces({
@@ -23,6 +24,17 @@ export const metadata: Metadata = {
       "Website widget + inbox for Maldivian guesthouses, with translation.",
     images: [{ url: "/redhan.jpeg", width: 1200, height: 630, alt: "Meckvy" }],
   },
+  applicationName: "Meckvy",
+  appleWebApp: {
+    capable: true,
+    title: "Meckvy",
+    statusBarStyle: "default",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0d6b6e",
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -36,6 +48,7 @@ export default function RootLayout({
       className={`${display.variable} ${body.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans text-ink">
+        <AppRuntime />
         {children}
       </body>
     </html>

@@ -4,7 +4,7 @@ import type { RiskLevel } from "./types";
 
 let configured = false;
 
-function ensureVapid() {
+export function ensureVapid() {
   if (configured) return;
 
   const publicKey = process.env.VAPID_PUBLIC_KEY?.trim();
