@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { EnquiryForm, PickRoomButton } from "@/components/EnquiryForm";
+import { PhotoGallery } from "@/components/PhotoGallery";
 import { countPageView, getPublicGuesthouse } from "@/lib/guesthouse-page";
 import { lowestPrice, type GuesthouseProfile } from "@/lib/profile";
 
@@ -172,6 +173,12 @@ export default async function GuesthousePage({ params, searchParams }: Props) {
 
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-12 md:px-10 lg:grid-cols-[1fr_24rem]">
         <div className="space-y-12">
+          {profile.gallery.length > 0 && (
+            <section>
+              <PhotoGallery photos={profile.gallery} name={gh.name} />
+            </section>
+          )}
+
           {profile.description && (
             <section>
               <h2 className="font-[family-name:var(--font-display)] text-2xl font-semibold text-ink md:text-3xl">

@@ -177,18 +177,18 @@ export default async function DashboardPage() {
             {steps.map((step, i) => (
               <li
                 key={step.title}
-                className={`flex flex-wrap items-center gap-4 rounded-xl border px-4 py-3 ${
-                  step.done ? "border-line bg-sand/40" : "border-lagoon/25"
+                className={`grid grid-cols-[2rem_1fr] items-center gap-x-4 gap-y-3 rounded-xl border px-4 py-3 sm:grid-cols-[2rem_1fr_auto] ${
+                  step.done ? "border-line bg-sand/40" : "border-lagoon/25 bg-white/60"
                 }`}
               >
                 <span
                   className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold ${
-                    step.done ? "bg-lagoon text-foam" : "bg-sand text-ink"
+                    step.done ? "bg-lagoon text-foam" : "bg-lagoon-mist text-lagoon-deep"
                   }`}
                 >
                   {step.done ? "✓" : i + 1}
                 </span>
-                <div className="min-w-0 flex-1">
+                <div className="min-w-0">
                   <p
                     className={`font-medium ${step.done ? "text-ink-soft line-through" : "text-ink"}`}
                   >
@@ -201,7 +201,7 @@ export default async function DashboardPage() {
                 {!step.done && step.href && (
                   <Link
                     href={step.href}
-                    className="btn-lift rounded-full bg-lagoon px-4 py-2 text-sm font-semibold text-foam hover:bg-lagoon-deep"
+                    className="btn-lift col-start-2 justify-self-start whitespace-nowrap rounded-full bg-lagoon px-4 py-2 text-sm font-semibold text-foam hover:bg-lagoon-deep sm:col-start-3"
                   >
                     {step.cta}
                   </Link>

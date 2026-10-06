@@ -6,6 +6,7 @@ export const DEMO_PROFILE: GuesthouseProfile = {
   description:
     "A family-run guesthouse on Maafushi with bright, air-conditioned rooms, a rooftop for sunset, and a team that knows every sandbank and reef nearby. We arrange speedboat transfers from Velana Airport, snorkeling with turtles, and day trips to sandbanks — just ask.",
   coverUrl: "",
+  gallery: [],
   theme: "night",
   rooms: [
     { name: "Deluxe Double", price: 85, guests: 2, note: "Queen bed, balcony" },

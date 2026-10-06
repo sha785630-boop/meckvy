@@ -11,6 +11,7 @@ export type GuesthouseProfile = {
   tagline: string;
   description: string;
   coverUrl: string;
+  gallery: string[];
   theme: CoverTheme;
   rooms: Room[];
   amenities: string[];
@@ -73,6 +74,7 @@ export function defaultProfile(island = ""): GuesthouseProfile {
       : "Your island home in the Maldives",
     description: "",
     coverUrl: "",
+    gallery: [],
     theme: "night",
     rooms: [],
     amenities: ["Free Wi-Fi", "Air conditioning", "Breakfast included"],
@@ -94,6 +96,13 @@ function str(value: unknown, max: number): string {
 function httpUrl(value: unknown): string {
   const s = str(value, 500);
   return /^https:\/\/\S+$/i.test(s) ? s : "";
+}
+
+export const MAX_GALLERY = 12;
+
+function imageUrl(value: unknown): string {
+  const s = str(value, 500);
+  return /^\/api\/photos\/[\w-]+$/.test(s) ? s : httpUrl(s);
 }
 
 export function sanitizeProfile(
@@ -131,7 +140,10 @@ export function sanitizeProfile(
   return {
     tagline: str(p.tagline, 90) || base.tagline,
     description: str(p.description, 1200),
-    coverUrl: httpUrl(p.coverUrl),
+    coverUrl: imageUrl(p.coverUrl),
+    gallery: Array.isArray(p.gallery)
+      ? [...new Set(p.gallery.map(imageUrl).filter(Boolean))].slice(0, MAX_GALLERY)
+      : base.gallery,
     theme,
     rooms,
     amenities: pick(AMENITIES, p.amenities, base.amenities),
@@ -158,6 +170,22 @@ export function parseProfile(
   } catch {
     return defaultProfile(island);
   }
+}
+
+export function completeness(profile: GuesthouseProfile) {
+  const checks = [
+    { label: "Cover photo", done: Boolean(profile.coverUrl) },
+    { label: "3+ gallery photos", done: profile.gallery.length >= 3 },
+    { label: "Description", done: profile.description.length >= 60 },
+    { label: "Rooms with prices", done: profile.rooms.some((r) => r.price > 0) },
+    { label: "5+ amenities", done: profile.amenities.length >= 5 },
+    { label: "Transfer info", done: Boolean(profile.transfer) },
+    { label: "WhatsApp button", done: Boolean(profile.whatsapp) },
+  ];
+  const score = Math.round(
+    (checks.filter((c) => c.done).length / checks.length) * 100,
+  );
+  return { score, checks };
 }
 
 export function lowestPrice(profile: GuesthouseProfile): number | null {

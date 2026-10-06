@@ -38,6 +38,15 @@ export const reviews = sqliteTable("reviews", {
   updatedAt: text("updated_at").notNull(),
 });
 
+/** Guesthouse photos, stored compressed as base64 and served by /api/photos/[id] */
+export const photos = sqliteTable("photos", {
+  id: text("id").primaryKey(),
+  guesthouseId: text("guesthouse_id").notNull(),
+  mime: text("mime").notNull(),
+  data: text("data").notNull(),
+  createdAt: text("created_at").notNull(),
+});
+
 export const messages = sqliteTable("messages", {
   id: text("id").primaryKey(),
   guesthouseId: text("guesthouse_id").notNull(),
