@@ -148,8 +148,13 @@ export function ConnectWebsite({
           1. Share your Meckvy page
         </h2>
         <p className="mt-2 text-sm text-ink-soft">
-          This is your own guest message page. Anyone who opens it can send you
-          an enquiry — it lands straight in your Inbox.
+          This is your own booking page. Anyone who opens it can check
+          availability and send you an enquiry — it lands straight in your
+          Inbox.{" "}
+          <a href="/dashboard/my-page" className="font-semibold text-lagoon-deep underline">
+            Add rooms, prices and photos
+          </a>
+          .
         </p>
 
         <div className="mt-5 grid gap-6 md:grid-cols-[1fr_auto]">

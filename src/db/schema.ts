@@ -19,6 +19,8 @@ export const guesthouses = sqliteTable("guesthouses", {
   stripeSubscriptionId: text("stripe_subscription_id"),
   whatsappNumber: text("whatsapp_number"),
   referredBy: text("referred_by"),
+  profileJson: text("profile_json"),
+  pageViews: integer("page_views").notNull().default(0),
   createdAt: text("created_at").notNull(),
 });
 

@@ -6,7 +6,8 @@ import { LogoutButton } from "@/components/LogoutButton";
 const NAV = [
   { href: "/dashboard", label: "Overview" },
   { href: "/dashboard/inbox", label: "Inbox" },
-  { href: "/dashboard/connect", label: "Connect website" },
+  { href: "/dashboard/my-page", label: "My booking page" },
+  { href: "/dashboard/connect", label: "Share & connect" },
   { href: "/dashboard/templates", label: "Templates" },
   { href: "/dashboard/automations", label: "Automations" },
   { href: "/dashboard/invite", label: "Invite & earn" },

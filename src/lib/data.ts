@@ -1,4 +1,36 @@
+import type { GuesthouseProfile } from "./profile";
 import type { Automation, GuestMessage, LanguageCode, Template } from "./types";
+
+export const DEMO_PROFILE: GuesthouseProfile = {
+  tagline: "Barefoot island living, 3 minutes from Bikini Beach",
+  description:
+    "A family-run guesthouse on Maafushi with bright, air-conditioned rooms, a rooftop for sunset, and a team that knows every sandbank and reef nearby. We arrange speedboat transfers from Velana Airport, snorkeling with turtles, and day trips to sandbanks — just ask.",
+  coverUrl: "",
+  theme: "night",
+  rooms: [
+    { name: "Deluxe Double", price: 85, guests: 2, note: "Queen bed, balcony" },
+    { name: "Sea View Twin", price: 95, guests: 2, note: "Two beds, ocean view" },
+    { name: "Family Suite", price: 140, guests: 4, note: "Two rooms, sofa area" },
+  ],
+  amenities: [
+    "Free Wi-Fi",
+    "Air conditioning",
+    "Breakfast included",
+    "Snorkeling trips",
+    "Sandbank trips",
+    "Speedboat transfer",
+    "Rooftop terrace",
+    "Bikini beach nearby",
+  ],
+  checkIn: "14:00",
+  checkOut: "12:00",
+  transfer: "Speedboat from Velana Airport — about 30 minutes, USD 25 per person.",
+  whatsapp: "",
+  instagram: "",
+  mapsUrl: "",
+  replyTime: "within an hour",
+  languages: ["English", "Dhivehi", "Russian", "Italian"],
+};
 
 export const LANGUAGES: { code: LanguageCode; label: string }[] = [
   { code: "en", label: "English" },

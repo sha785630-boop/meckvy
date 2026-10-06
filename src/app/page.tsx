@@ -149,6 +149,88 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Free booking page */}
+      <section className="px-6 py-20 md:px-10 md:py-28">
+        <div className="mx-auto grid max-w-5xl items-center gap-12 md:grid-cols-2">
+          <Reveal>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-coral">
+              Included free
+            </p>
+            <h2 className="mt-3 font-[family-name:var(--font-display)] text-3xl font-semibold text-ink md:text-5xl">
+              A booking page your guests will love.
+            </h2>
+            <p className="mt-4 text-lg text-ink-soft">
+              No website? You get one. Rooms, prices, photos and a smart
+              enquiry form — ready in 5 minutes, perfect on any phone.
+            </p>
+            <ul className="mt-6 space-y-3 text-ink">
+              {[
+                "📅 Guests pick dates, guests and room — and see a price estimate",
+                "💬 One-tap WhatsApp and Instagram buttons",
+                "🌍 Guests write in any language — you reply in seconds",
+                "📈 See how many people view your page each week",
+              ].map((item) => (
+                <li key={item} className="flex gap-2">
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/widget/gh-demo"
+                className="btn-lift rounded-full bg-lagoon px-6 py-3 text-sm font-semibold text-foam hover:bg-lagoon-deep"
+              >
+                See an example page
+              </Link>
+              <Link
+                href="/register"
+                className="btn-lift rounded-full border border-line px-6 py-3 text-sm font-semibold text-ink hover:bg-foam"
+              >
+                Build mine free
+              </Link>
+            </div>
+          </Reveal>
+          <Reveal delay={1}>
+            <div className="animate-float-y mx-auto w-full max-w-sm overflow-hidden rounded-[2rem] border border-line bg-foam shadow-2xl shadow-ink/15">
+              <div className="relative h-44 overflow-hidden">
+                <Image src="/redhan.jpeg" alt="" fill className="object-cover" sizes="384px" />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink/80 to-transparent" />
+                <div className="absolute bottom-3 left-4 text-foam">
+                  <p className="text-xs">📍 Maafushi, Maldives</p>
+                  <p className="font-[family-name:var(--font-display)] text-xl font-semibold">
+                    Lagoon Pearl Guesthouse
+                  </p>
+                </div>
+              </div>
+              <div className="space-y-3 p-4">
+                {[
+                  { n: "Deluxe Double", p: 85 },
+                  { n: "Sea View Twin", p: 95 },
+                ].map((r) => (
+                  <div
+                    key={r.n}
+                    className="flex items-center justify-between rounded-xl border border-line px-3 py-2.5"
+                  >
+                    <span className="text-sm font-medium text-ink">{r.n}</span>
+                    <span className="text-sm font-semibold text-lagoon-deep">
+                      ${r.p}
+                      <span className="text-xs font-normal text-ink-soft">/night</span>
+                    </span>
+                  </div>
+                ))}
+                <div className="flex items-center justify-between rounded-xl bg-lagoon-mist/50 px-3 py-2 text-sm">
+                  <span className="text-ink-soft">3 nights · Sea View Twin</span>
+                  <span className="font-semibold text-lagoon-deep">≈ $285</span>
+                </div>
+                <div className="rounded-full bg-lagoon py-2.5 text-center text-sm font-semibold text-foam">
+                  Check availability
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* How */}
       <section className="bg-ink px-6 py-20 text-foam md:px-10 md:py-28">
         <div className="mx-auto max-w-5xl">

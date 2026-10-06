@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
+import { getPublicGuesthouse } from "@/lib/guesthouse-page";
 import { upsertInbound } from "@/lib/store";
 import { guessLanguage } from "@/lib/whatsapp";
 import type { GuestMessage } from "@/lib/types";
@@ -25,13 +26,7 @@ export async function GET(
   context: { params: Promise<{ id: string }> },
 ) {
   const { id } = await context.params;
-  const db = await getDb();
-  const rows = await db
-    .select()
-    .from(schema.guesthouses)
-    .where(eq(schema.guesthouses.id, id))
-    .limit(1);
-  const gh = rows[0];
+  const gh = await getPublicGuesthouse(id);
   if (!gh) {
     return NextResponse.json(
       { error: "Guesthouse not found" },
@@ -44,6 +39,8 @@ export async function GET(
       id: gh.id,
       name: gh.name,
       island: gh.island,
+      rooms: gh.profile.rooms,
+      replyTime: gh.profile.replyTime,
     },
     { headers: corsHeaders() },
   );
@@ -62,6 +59,10 @@ export async function POST(
       phone?: string;
       message?: string;
       dates?: string;
+      checkIn?: string;
+      checkOut?: string;
+      guests?: string | number;
+      room?: string;
     };
 
     const name = body.name?.trim();
@@ -99,11 +100,32 @@ export async function POST(
     const contact = email;
     const threadKey = `web-${email.toLowerCase()}`;
 
+    const checkIn = body.checkIn?.trim().slice(0, 10);
+    const checkOut = body.checkOut?.trim().slice(0, 10);
+    const nights =
+      checkIn && checkOut
+        ? Math.round(
+            (Date.parse(checkOut) - Date.parse(checkIn)) / 86_400_000,
+          )
+        : 0;
+    const guests = String(body.guests ?? "").trim().slice(0, 3);
+    const room = body.room?.trim().slice(0, 60);
+
+    const details = [
+      checkIn && checkOut
+        ? `Stay: ${checkIn} → ${checkOut}${nights > 0 ? ` (${nights} night${nights === 1 ? "" : "s"})` : ""}`
+        : body.dates?.trim()
+          ? `Stay dates: ${body.dates.trim()}`
+          : "",
+      guests ? `Guests: ${guests}` : "",
+      room ? `Room: ${room}` : "",
+      phone ? `Phone: ${phone}` : "",
+    ].filter(Boolean);
+
     const fullBody = [
       message,
-      body.dates?.trim() ? `\n\nStay dates: ${body.dates.trim()}` : "",
-      phone ? `\n\nPhone: ${phone}` : "",
-      "\n\n— Sent from website widget",
+      details.length ? `\n\n${details.join("\n")}` : "",
+      "\n\n— Sent from your Meckvy booking page",
     ].join("");
 
     const inbound: GuestMessage = {
@@ -111,7 +133,9 @@ export async function POST(
       channel: "website",
       guestName: name,
       guestContact: contact,
-      subject: `Website inquiry — ${name}`,
+      subject: room
+        ? `Booking enquiry — ${room} — ${name}`
+        : `Website inquiry — ${name}`,
       body: fullBody,
       detectedLanguage: guessLanguage(message),
       status: "unread",

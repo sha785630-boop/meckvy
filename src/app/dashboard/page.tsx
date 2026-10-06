@@ -1,13 +1,17 @@
 import { eq } from "drizzle-orm";
 import Link from "next/link";
 import { getDb, schema } from "@/db";
-import { AUTOMATIONS } from "@/lib/data";
 import { getSession } from "@/lib/auth";
+import { getPublicGuesthouse } from "@/lib/guesthouse-page";
 import { getReviewForGuesthouse } from "@/lib/reviews";
 import { getGuesthouse } from "@/lib/stripe";
 import { listMessages } from "@/lib/store";
 
 const REAL_GUEST_PREFIXES = ["web-", "em-", "wa-"];
+
+function weekAgo() {
+  return Date.now() - 7 * 86_400_000;
+}
 
 export default async function DashboardPage() {
   const session = await getSession();
@@ -26,9 +30,18 @@ export default async function DashboardPage() {
   const review = session
     ? await getReviewForGuesthouse(session.guesthouseId)
     : null;
+  const page = session ? await getPublicGuesthouse(session.guesthouseId) : null;
 
-  const hasRealEnquiry = messages.some((m) =>
+  const realEnquiries = messages.filter((m) =>
     REAL_GUEST_PREFIXES.some((p) => m.id.startsWith(p)),
+  );
+  const hasRealEnquiry = realEnquiries.length > 0;
+  const since = weekAgo();
+  const enquiriesThisWeek = realEnquiries.filter(
+    (m) => Date.parse(m.receivedAt) >= since,
+  ).length;
+  const pageReady = Boolean(
+    page && page.profile.rooms.length > 0 && page.profile.description,
   );
   const hasReplied = messages.some((m) => m.id.startsWith("out-"));
   const steps = [
@@ -38,6 +51,14 @@ export default async function DashboardPage() {
       detail: "Done — welcome to Meckvy.",
       href: null,
       cta: null,
+    },
+    {
+      done: pageReady,
+      title: "Build your booking page",
+      detail:
+        "Add your rooms, prices and a short description — guests get a beautiful page with an enquiry form.",
+      href: "/dashboard/my-page",
+      cta: "Build my page",
     },
     {
       done: hasRealEnquiry,
@@ -81,7 +102,6 @@ export default async function DashboardPage() {
   const plan = gh?.plan ?? session?.plan ?? "—";
   const planStatus = gh?.planStatus ?? "trialing";
   const unread = messages.filter((m) => m.status === "unread").length;
-  const activeAutos = AUTOMATIONS.filter((a) => a.enabled).length;
   const channels = {
     website: messages.filter((m) => m.channel === "website").length,
     whatsapp: messages.filter((m) => m.channel === "whatsapp").length,
@@ -101,17 +121,22 @@ export default async function DashboardPage() {
         </p>
       </header>
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         {[
+          {
+            label: "Page views",
+            value: String(page?.pageViews ?? 0),
+            href: "/dashboard/my-page",
+          },
+          {
+            label: "Enquiries · 7 days",
+            value: String(enquiriesThisWeek),
+            href: "/dashboard/inbox",
+          },
           {
             label: "Unread messages",
             value: String(unread),
             href: "/dashboard/inbox",
-          },
-          {
-            label: "Active automations",
-            value: String(activeAutos),
-            href: "/dashboard/automations",
           },
           {
             label: "Plan",

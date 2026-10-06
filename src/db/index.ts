@@ -2,9 +2,9 @@ import fs from "node:fs";
 import path from "node:path";
 import { createClient, type Client } from "@libsql/client";
 import bcrypt from "bcryptjs";
-import { count, eq } from "drizzle-orm";
+import { and, count, eq, isNull } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/libsql";
-import { DEMO_MESSAGES } from "@/lib/data";
+import { DEMO_MESSAGES, DEMO_PROFILE } from "@/lib/data";
 import * as schema from "./schema";
 
 const DATA_DIR = path.join(process.cwd(), "data");
@@ -173,6 +173,8 @@ async function ensureSchema(client: Client) {
     `ALTER TABLE guesthouses ADD COLUMN stripe_subscription_id TEXT`,
     `ALTER TABLE guesthouses ADD COLUMN whatsapp_number TEXT`,
     `ALTER TABLE guesthouses ADD COLUMN referred_by TEXT`,
+    `ALTER TABLE guesthouses ADD COLUMN profile_json TEXT`,
+    `ALTER TABLE guesthouses ADD COLUMN page_views INTEGER NOT NULL DEFAULT 0`,
   ];
   for (const sql of alterStatements) {
     try {
@@ -214,6 +216,16 @@ async function seedDemoAccount(db: AppDb) {
       createdAt: now,
     });
   }
+
+  await db
+    .update(schema.guesthouses)
+    .set({ profileJson: JSON.stringify(DEMO_PROFILE) })
+    .where(
+      and(
+        eq(schema.guesthouses.id, DEMO_GUESTHOUSE_ID),
+        isNull(schema.guesthouses.profileJson),
+      ),
+    );
 
   const [{ value }] = await db
     .select({ value: count() })
