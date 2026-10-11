@@ -3,6 +3,7 @@ import { DashboardNav } from "@/components/DashboardNav";
 import { LogoutButton } from "@/components/LogoutButton";
 import { isAdminEmail } from "@/lib/admin";
 import { getSession } from "@/lib/auth";
+import { billingState, getGuesthouseRow } from "@/lib/billing";
 import { listMessages } from "@/lib/store";
 
 export default async function DashboardLayout({
@@ -15,6 +16,25 @@ export default async function DashboardLayout({
     ? (await listMessages(session.guesthouseId)).filter((m) => m.status === "unread").length
     : 0;
   const initial = (session?.guesthouseName ?? "G").trim().charAt(0).toUpperCase();
+  const gh = session ? await getGuesthouseRow(session.guesthouseId) : null;
+  const billing = gh ? billingState(gh) : null;
+  const banner =
+    billing?.kind === "due"
+      ? {
+          tone: "bg-coral text-foam",
+          text: "Your free trial has ended — guest messages still arrive, but renew to keep using Meckvy.",
+          cta: "Renew now",
+        }
+      : billing && billing.kind !== "demo" && billing.daysLeft <= 3
+        ? {
+            tone: "bg-amber-100 text-amber-950",
+            text:
+              billing.kind === "trial"
+                ? `Your free trial ends in ${billing.daysLeft} day${billing.daysLeft === 1 ? "" : "s"}.`
+                : `Your plan renews in ${billing.daysLeft} day${billing.daysLeft === 1 ? "" : "s"}.`,
+            cta: "Pay by bank transfer",
+          }
+        : null;
 
   return (
     <div className="sand-glow flex min-h-screen flex-col bg-sand md:flex-row">
@@ -50,7 +70,18 @@ export default async function DashboardLayout({
           </div>
         </div>
       </aside>
-      <div className="flex-1 px-4 py-6 md:px-8 md:py-8">{children}</div>
+      <div className="flex-1">
+        {banner && (
+          <Link
+            href="/dashboard/billing"
+            className={`flex flex-wrap items-center justify-center gap-x-3 gap-y-1 px-4 py-2.5 text-center text-sm font-medium ${banner.tone}`}
+          >
+            <span>{banner.text}</span>
+            <span className="underline underline-offset-2">{banner.cta} →</span>
+          </Link>
+        )}
+        <div className="px-4 py-6 md:px-8 md:py-8">{children}</div>
+      </div>
     </div>
   );
 }

@@ -110,8 +110,8 @@ export default async function InvitePage() {
       )}
 
       <p className="mt-6 text-xs text-ink-soft">
-        Free months are added to your next invoice once the invited guesthouse
-        makes its first payment.
+        Guesthouses you invite get 30 extra free days straight away. Your free
+        month is added once they make their first payment.
       </p>
     </div>
   );

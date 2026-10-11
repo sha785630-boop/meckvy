@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { desc } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { getAdminSession } from "@/lib/admin";
+import { billingState } from "@/lib/billing";
 import { listSignupLeads } from "@/lib/leads";
 
 export const runtime = "nodejs";
@@ -21,10 +22,13 @@ export async function GET() {
       plan: schema.guesthouses.plan,
       planStatus: schema.guesthouses.planStatus,
       referredBy: schema.guesthouses.referredBy,
+      trialEndsAt: schema.guesthouses.trialEndsAt,
+      paidUntil: schema.guesthouses.paidUntil,
       createdAt: schema.guesthouses.createdAt,
     })
     .from(schema.guesthouses)
     .orderBy(desc(schema.guesthouses.createdAt));
+  const accountsWithBilling = accounts.map((a) => ({ ...a, billing: billingState(a) }));
 
   const reviews = await db
     .select()
@@ -33,7 +37,7 @@ export async function GET() {
 
   return NextResponse.json({
     leads: await listSignupLeads(),
-    accounts,
+    accounts: accountsWithBilling,
     reviews,
   });
 }

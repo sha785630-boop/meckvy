@@ -3,6 +3,7 @@ import Link from "next/link";
 import { AppPromo } from "@/components/AppPromo";
 import { getDb, schema } from "@/db";
 import { getSession } from "@/lib/auth";
+import { billingState } from "@/lib/billing";
 import { getPublicGuesthouse } from "@/lib/guesthouse-page";
 import { getReviewForGuesthouse } from "@/lib/reviews";
 import { getGuesthouse } from "@/lib/stripe";
@@ -101,7 +102,15 @@ export default async function DashboardPage() {
   const doneCount = steps.filter((s) => s.done).length;
   const progress = Math.round((doneCount / steps.length) * 100);
   const plan = gh?.plan ?? session?.plan ?? "—";
-  const planStatus = gh?.planStatus ?? "trialing";
+  const billing = gh ? billingState(gh) : null;
+  const planLabel =
+    billing?.kind === "trial"
+      ? `Free trial · ${billing.daysLeft} day${billing.daysLeft === 1 ? "" : "s"} left`
+      : billing?.kind === "active"
+        ? `${plan} · paid`
+        : billing?.kind === "due"
+          ? "Trial ended"
+          : plan;
   const unread = messages.filter((m) => m.status === "unread").length;
   const channels = {
     website: messages.filter((m) => m.channel === "website").length,
@@ -117,7 +126,7 @@ export default async function DashboardPage() {
         </h1>
         <p className="mt-1 text-ink-soft">
           {session
-            ? `${session.guesthouseName} · ${plan} · ${planStatus}`
+            ? `${session.guesthouseName} · ${planLabel}`
             : "Your guesthouse communications at a glance."}
         </p>
       </header>
@@ -143,8 +152,15 @@ export default async function DashboardPage() {
           },
           {
             label: "Plan",
-            value: `${plan}${planStatus === "active" ? " ✓" : ""}`,
-            href: "/pricing",
+            value:
+              billing?.kind === "trial"
+                ? `${billing.daysLeft}d trial`
+                : billing?.kind === "active"
+                  ? `${plan} ✓`
+                  : billing?.kind === "due"
+                    ? "Renew"
+                    : plan,
+            href: "/dashboard/billing",
           },
         ].map((stat) => (
           <Link
@@ -215,18 +231,19 @@ export default async function DashboardPage() {
         </section>
       )}
 
-      {planStatus !== "active" && (
-        <section className="mt-6 rounded-2xl border border-coral/30 bg-foam p-5">
+      {billing?.kind === "trial" && (
+        <section className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-coral/30 bg-foam p-5">
           <p className="text-sm text-ink-soft">
-            {planStatus === "trialing"
-              ? "You’re on a free trial. Next step: share your Meckvy link or add the chat button to your website so guest enquiries start arriving here."
-              : `Your subscription is ${planStatus}. Contact us to renew — we invoice monthly by BML bank transfer.`}
+            <span className="font-semibold text-ink">
+              {billing.daysLeft} day{billing.daysLeft === 1 ? "" : "s"} left in your free trial.
+            </span>{" "}
+            Keep Meckvy from MVR 450/month — pay by BML transfer, no card needed.
           </p>
           <Link
-            href="/dashboard/connect"
-            className="mt-3 inline-flex rounded-full bg-coral px-5 py-2 text-sm font-semibold text-foam"
+            href="/dashboard/billing"
+            className="btn-lift inline-flex rounded-full bg-coral px-5 py-2 text-sm font-semibold text-foam"
           >
-            Connect your website
+            Choose a plan
           </Link>
         </section>
       )}

@@ -14,7 +14,7 @@ const PLANS: {
   {
     id: "starter",
     name: "Starter",
-    price: "$29 / month",
+    price: "MVR 450 / month",
     blurb: "One guesthouse · website widget + inbox + translation",
     features: [
       "Website contact widget",
@@ -26,7 +26,7 @@ const PLANS: {
   {
     id: "pro",
     name: "Pro",
-    price: "$59 / month",
+    price: "MVR 910 / month",
     blurb: "Widget + email · automations that save hours",
     features: [
       "Everything in Starter",
@@ -152,7 +152,7 @@ export default function PricingPage() {
 
       <div className="mx-auto max-w-5xl px-6 py-14 md:px-10">
         <h1 className="animate-fade-up font-[family-name:var(--font-display)] text-4xl font-semibold text-ink md:text-5xl">
-          Start taking more bookings — from $29/month
+          Start taking more bookings — from MVR 450/month
         </h1>
         <p className="animate-fade-up-delay mt-3 max-w-2xl text-lg text-ink-soft">
           One lost enquiry costs more than a month of Meckvy. Start a free
@@ -222,7 +222,7 @@ export default function PricingPage() {
               </Link>
             </>
           ) : (
-            "Free trial, no card needed. After the trial, pay monthly by BML bank transfer — we send you an invoice."
+            "14-day free trial, no card needed. Then pay by BML transfer and upload the slip in the app — your plan switches on within hours. USD prices: Starter ≈ $29, Pro ≈ $59. Pay 12 months, get 2 free."
           )}
         </p>
         <p className="mt-2 text-xs text-ink-soft">

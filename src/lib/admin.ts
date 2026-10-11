@@ -1,12 +1,15 @@
 import { getSession } from "@/lib/auth";
 
-export function isAdminEmail(email: string | undefined | null): boolean {
-  if (!email) return false;
-  const admins = (process.env.ADMIN_EMAILS || "sha785630@gmail.com")
+export function adminEmails(): string[] {
+  return (process.env.ADMIN_EMAILS || "sha785630@gmail.com")
     .split(",")
     .map((e) => e.trim().toLowerCase())
     .filter(Boolean);
-  return admins.includes(email.trim().toLowerCase());
+}
+
+export function isAdminEmail(email: string | undefined | null): boolean {
+  if (!email) return false;
+  return adminEmails().includes(email.trim().toLowerCase());
 }
 
 export async function getAdminSession() {

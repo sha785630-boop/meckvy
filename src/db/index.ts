@@ -122,6 +122,30 @@ async function ensureSchema(client: Client) {
     );
     CREATE INDEX IF NOT EXISTS idx_owner_push_gh ON owner_push_subscriptions(guesthouse_id);
 
+    CREATE TABLE IF NOT EXISTS payments (
+      id TEXT PRIMARY KEY NOT NULL,
+      guesthouse_id TEXT NOT NULL,
+      plan TEXT NOT NULL,
+      months INTEGER NOT NULL,
+      amount_mvr INTEGER NOT NULL,
+      amount_usd INTEGER NOT NULL,
+      reference TEXT NOT NULL,
+      slip_mime TEXT NOT NULL,
+      slip_data TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'pending',
+      note TEXT,
+      created_at TEXT NOT NULL,
+      reviewed_at TEXT
+    );
+    CREATE INDEX IF NOT EXISTS idx_payments_gh ON payments(guesthouse_id);
+    CREATE INDEX IF NOT EXISTS idx_payments_status ON payments(status);
+
+    CREATE TABLE IF NOT EXISTS app_settings (
+      key TEXT PRIMARY KEY NOT NULL,
+      value TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+
     CREATE INDEX IF NOT EXISTS idx_messages_received_at ON messages(received_at);
     CREATE INDEX IF NOT EXISTS idx_messages_thread ON messages(thread_id);
     CREATE INDEX IF NOT EXISTS idx_messages_gh ON messages(guesthouse_id);
@@ -194,6 +218,8 @@ async function ensureSchema(client: Client) {
     `ALTER TABLE guesthouses ADD COLUMN referred_by TEXT`,
     `ALTER TABLE guesthouses ADD COLUMN profile_json TEXT`,
     `ALTER TABLE guesthouses ADD COLUMN page_views INTEGER NOT NULL DEFAULT 0`,
+    `ALTER TABLE guesthouses ADD COLUMN trial_ends_at TEXT`,
+    `ALTER TABLE guesthouses ADD COLUMN paid_until TEXT`,
   ];
   for (const sql of alterStatements) {
     try {
@@ -202,6 +228,12 @@ async function ensureSchema(client: Client) {
       // column already exists
     }
   }
+
+  // Accounts created before billing existed get a fresh 14-day trial
+  await client.execute({
+    sql: `UPDATE guesthouses SET trial_ends_at = ? WHERE trial_ends_at IS NULL`,
+    args: [new Date(Date.now() + 14 * 86_400_000).toISOString()],
+  });
 }
 
 async function seedDemoAccount(db: AppDb) {

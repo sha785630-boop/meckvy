@@ -21,7 +21,32 @@ export const guesthouses = sqliteTable("guesthouses", {
   referredBy: text("referred_by"),
   profileJson: text("profile_json"),
   pageViews: integer("page_views").notNull().default(0),
+  trialEndsAt: text("trial_ends_at"),
+  paidUntil: text("paid_until"),
   createdAt: text("created_at").notNull(),
+});
+
+/** Bank-transfer payments: owner uploads a slip, an admin approves it */
+export const payments = sqliteTable("payments", {
+  id: text("id").primaryKey(),
+  guesthouseId: text("guesthouse_id").notNull(),
+  plan: text("plan").notNull(),
+  months: integer("months").notNull(),
+  amountMvr: integer("amount_mvr").notNull(),
+  amountUsd: integer("amount_usd").notNull(),
+  reference: text("reference").notNull(),
+  slipMime: text("slip_mime").notNull(),
+  slipData: text("slip_data").notNull(),
+  status: text("status").notNull().default("pending"), // pending | approved | rejected
+  note: text("note"),
+  createdAt: text("created_at").notNull(),
+  reviewedAt: text("reviewed_at"),
+});
+
+export const appSettings = sqliteTable("app_settings", {
+  key: text("key").primaryKey(),
+  value: text("value").notNull(),
+  updatedAt: text("updated_at").notNull(),
 });
 
 /** One public review per guesthouse; owners can edit theirs */
@@ -145,6 +170,7 @@ export type GuesthouseRow = typeof guesthouses.$inferSelect;
 export type MessageRow = typeof messages.$inferSelect;
 export type SignupLeadRow = typeof signupLeads.$inferSelect;
 export type ReviewRow = typeof reviews.$inferSelect;
+export type PaymentRow = typeof payments.$inferSelect;
 export type ShieldClientRow = typeof shieldClients.$inferSelect;
 export type ShieldAlertRow = typeof shieldAlerts.$inferSelect;
 export type ShieldThreatRow = typeof shieldThreats.$inferSelect;

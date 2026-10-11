@@ -1,6 +1,7 @@
 import webpush from "web-push";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import { getDb, schema } from "@/db";
+import { adminEmails } from "@/lib/admin";
 import { ensureVapid } from "@/lib/shield/push";
 
 export async function saveOwnerSubscription(
@@ -26,6 +27,21 @@ export async function removeOwnerSubscription(endpoint: string) {
   await db
     .delete(schema.ownerPushSubscriptions)
     .where(eq(schema.ownerPushSubscriptions.endpoint, endpoint));
+}
+
+/** Ping the Meckvy admins' devices (they enable alerts like any owner). Never throws. */
+export async function notifyAdmins(input: { title: string; body: string; url?: string }) {
+  try {
+    const db = await getDb();
+    const rows = await db
+      .select({ id: schema.guesthouses.id })
+      .from(schema.guesthouses)
+      .innerJoin(schema.users, eq(schema.users.id, schema.guesthouses.ownerUserId))
+      .where(inArray(schema.users.email, adminEmails()));
+    await Promise.all(rows.map((r) => notifyOwner(r.id, input)));
+  } catch {
+    // alerts are best-effort
+  }
 }
 
 /** Ping every device the guesthouse owner enabled. Never throws. */

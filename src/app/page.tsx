@@ -75,7 +75,7 @@ export default function HomePage() {
               href="/pricing"
               className="btn-lift rounded-full border border-foam/45 bg-foam/10 px-8 py-4 text-base font-medium text-foam backdrop-blur hover:bg-foam/20"
             >
-              From $29 / month
+              From MVR 450 / month
             </Link>
           </div>
         </div>
@@ -285,9 +285,10 @@ export default function HomePage() {
               Less than one lost booking.
             </h2>
             <p className="mt-4 max-w-xl text-lg text-ink-soft">
-              Starter is $29/month. Pro is $59 with email replies and
-              automations. Free trial, no card, cancel anytime. Invite another
-              guesthouse and you both get a month free.
+              Starter is MVR 450/month. Pro is MVR 910 with email replies and
+              automations. 14-day free trial, no card — pay by BML transfer
+              from your phone. Invite another guesthouse and you both get a
+              month free.
             </p>
           </Reveal>
           <Reveal delay={1} className="mt-10 flex flex-wrap gap-8">

@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 import { getDb, schema, DEMO_GUESTHOUSE_ID } from "@/db";
+import { initialTrialEnd } from "@/lib/billing";
 import { DEMO_MESSAGES } from "@/lib/data";
 import {
   SESSION_COOKIE,
@@ -120,6 +121,7 @@ export async function registerAccount(input: {
     stripeSubscriptionId: null,
     whatsappNumber: null,
     referredBy,
+    trialEndsAt: initialTrialEnd(Boolean(referredBy)),
     createdAt: now,
   });
 

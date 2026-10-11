@@ -88,8 +88,8 @@ function RegisterForm() {
           }
           className="mt-1.5 w-full rounded-xl border border-line bg-white px-3 py-2.5 text-ink"
         >
-          <option value="starter">Starter — $29/mo</option>
-          <option value="pro">Pro — $59/mo</option>
+          <option value="starter">Starter — MVR 450/mo</option>
+          <option value="pro">Pro — MVR 910/mo</option>
         </select>
       </label>
       <button
