@@ -9,7 +9,7 @@ export function AppPromo() {
 
   const text = env.standalone
     ? "Turn on alerts to get a ding for every new guest enquiry."
-    : "Get the Meckvy app on your phone — and a ding for every new enquiry.";
+    : "Get the DirectStay app on your phone — and a ding for every new enquiry.";
 
   return (
     <Link

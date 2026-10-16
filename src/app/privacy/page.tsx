@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import { LegalPage } from "@/components/LegalPage";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — Meckvy",
+  title: "Privacy Policy — DirectStay by Meckvy",
 };
 
 export default function PrivacyPage() {
   return (
     <LegalPage title="Privacy Policy" updated="25 September 2026">
       <p>
-        Meckvy is software that helps guesthouses in the Maldives receive and
+        DirectStay is a Meckvy product that helps guesthouses in the Maldives receive and
         answer guest enquiries. This page explains what data we handle and why.
       </p>
 
@@ -48,7 +48,7 @@ export default function PrivacyPage() {
 
       <h2>Who owns guest data</h2>
       <p>
-        Each guesthouse controls the enquiries sent to it. Meckvy processes that
+        Each guesthouse controls the enquiries sent to it. Meckvy / DirectStay processes that
         data on the guesthouse’s behalf. Guests who want their data removed can
         ask the guesthouse or contact us directly.
       </p>

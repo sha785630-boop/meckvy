@@ -20,7 +20,7 @@ export default async function InvitePage() {
 
   const isDemo = session.guesthouseId === DEMO_GUESTHOUSE_ID;
   const link = `${SITE_URL}/register?ref=${session.guesthouseId}`;
-  const message = `Assalamu alaikum! I use Meckvy for guest messages at ${session.guesthouseName} — every website enquiry lands in one inbox and replies go out in the guest's language. Try it free with my link and your first month is on us: ${link}`;
+  const message = `Assalamu alaikum! I use DirectStay (by Meckvy) for guest messages at ${session.guesthouseName} — every website enquiry lands in one inbox and replies go out in the guest's language. Try it free with my link and your first month is on us: ${link}`;
 
   return (
     <div className="mx-auto max-w-3xl">

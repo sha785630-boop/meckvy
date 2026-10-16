@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { BrandLockup } from "@/components/BrandLockup";
 import type { PlanId } from "@/lib/leads";
 
 const PLANS: {
@@ -136,12 +137,7 @@ export default function PricingPage() {
   return (
     <main className="sand-glow min-h-screen">
       <header className="flex items-center justify-between border-b border-line/70 bg-foam/75 px-6 py-5 backdrop-blur-md md:px-10">
-        <Link
-          href="/"
-          className="font-[family-name:var(--font-display)] text-xl font-semibold text-lagoon-deep"
-        >
-          Meckvy
-        </Link>
+        <BrandLockup href="/" size="sm" />
         <Link
           href="/login"
           className="btn-lift text-sm font-medium text-ink-soft hover:text-ink"
@@ -155,7 +151,7 @@ export default function PricingPage() {
           Start taking more bookings — from MVR 450/month
         </h1>
         <p className="animate-fade-up-delay mt-3 max-w-2xl text-lg text-ink-soft">
-          One lost enquiry costs more than a month of Meckvy. Start a free
+          One lost enquiry costs more than a month of DirectStay. Start a free
           trial, put the widget on your website, and answer every guest from one
           inbox.
         </p>

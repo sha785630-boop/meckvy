@@ -79,7 +79,7 @@ export function ProductPreview() {
         <div className="bg-foam p-5 md:p-6">
           <div className="flex items-center justify-between gap-3">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-lagoon-deep">
-              Your Meckvy inbox
+              Your DirectStay inbox
             </p>
             <span className="text-xs text-coral">1 new</span>
           </div>

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { BrandLockup } from "@/components/BrandLockup";
 import { HomeReviews } from "@/components/HomeReviews";
 import { Reveal } from "@/components/Reveal";
 import { ProductPreview } from "@/components/ProductPreview";
@@ -8,9 +9,9 @@ export default function HomePage() {
   return (
     <main className="flex min-h-screen flex-col">
       <header className="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-6 py-5 md:px-10">
-        <span className="animate-fade-in font-[family-name:var(--font-display)] text-2xl font-semibold tracking-tight text-foam md:text-3xl">
-          Meckvy
-        </span>
+        <div className="animate-fade-in">
+          <BrandLockup tone="foam" size="lg" />
+        </div>
         <div className="animate-fade-in flex items-center gap-2 sm:gap-3">
           <Link
             href="/reviews"
@@ -38,7 +39,7 @@ export default function HomePage() {
         <div className="absolute inset-0 overflow-hidden">
           <Image
             src="/redhan.jpeg"
-            alt="Bioluminescent Maldivian shoreline at night — Meckvy cover"
+            alt="Bioluminescent Maldivian shoreline at night — DirectStay cover"
             fill
             priority
             sizes="100vw"
@@ -50,8 +51,11 @@ export default function HomePage() {
         <div className="grain pointer-events-none absolute inset-0 opacity-35" />
 
         <div className="relative z-10 mx-auto w-full max-w-5xl">
-          <p className="animate-fade-up font-[family-name:var(--font-display)] text-6xl font-semibold tracking-tight text-foam sm:text-7xl md:text-8xl lg:text-[7.5rem] lg:leading-[0.9]">
+          <p className="animate-fade-up text-sm font-semibold uppercase tracking-[0.22em] text-foam/70">
             Meckvy
+          </p>
+          <p className="animate-fade-up mt-3 font-[family-name:var(--font-display)] text-6xl font-semibold tracking-tight text-foam sm:text-7xl md:text-8xl lg:text-[7.5rem] lg:leading-[0.9]">
+            DirectStay
           </p>
           <div
             className="animate-shimmer-line mt-5 h-1 w-32 rounded-full bg-gradient-to-r from-coral via-lagoon-mist to-transparent sm:w-44"
@@ -62,7 +66,7 @@ export default function HomePage() {
           </h1>
           <p className="animate-fade-up-delay-2 mt-5 max-w-xl text-lg leading-relaxed text-foam/85 md:text-xl">
             Guest messages from your website land in one inbox. Reply in
-            English — Meckvy sends it in their language.
+            English — DirectStay sends it in their language.
           </p>
           <div className="animate-fade-up-delay-3 mt-10 flex flex-wrap gap-3">
             <Link
@@ -119,7 +123,7 @@ export default function HomePage() {
             </Reveal>
             <Reveal delay={2}>
               <p className="border-t border-lagoon/30 pt-6 text-lg leading-relaxed text-lagoon-deep">
-                Meckvy puts every website enquiry in one place, with English
+                DirectStay puts every website enquiry in one place, with English
                 previews and ready replies — so you answer fast and sound
                 professional.
               </p>
@@ -239,7 +243,7 @@ export default function HomePage() {
               Live in one afternoon
             </h2>
             <p className="mt-4 max-w-xl text-foam/70">
-              No developer needed. No website? No problem — share your Meckvy
+              No developer needed. No website? No problem — share your DirectStay
               link or QR code on Instagram, Facebook and Google Maps.
             </p>
           </Reveal>
@@ -253,7 +257,7 @@ export default function HomePage() {
               {
                 n: "2",
                 t: "Guests inquire",
-                d: "Rooms, transfers, check-in — messages hit your Meckvy inbox.",
+                d: "Rooms, transfers, check-in — messages hit your DirectStay inbox.",
               },
               {
                 n: "3",
@@ -327,7 +331,7 @@ export default function HomePage() {
             </p>
             <p className="mx-auto mt-5 max-w-lg text-lg text-foam/80">
               Start free — put the widget on your website today and answer your
-              next guest from Meckvy.
+              next guest from DirectStay.
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
               <Link
@@ -352,9 +356,14 @@ export default function HomePage() {
 
       <footer className="border-t border-line bg-foam px-6 py-8 text-sm text-ink-soft md:px-10">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3">
-          <span className="font-[family-name:var(--font-display)] text-lg font-semibold text-ink">
-            Meckvy
-          </span>
+          <div>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-ink-soft">
+              Meckvy
+            </p>
+            <p className="font-[family-name:var(--font-display)] text-lg font-semibold text-ink">
+              DirectStay
+            </p>
+          </div>
           <nav className="flex flex-wrap items-center gap-5">
             <Link href="/reviews" className="hover:text-ink">
               Reviews
@@ -368,7 +377,7 @@ export default function HomePage() {
             <Link href="/terms" className="hover:text-ink">
               Terms
             </Link>
-            <span>Guesthouse automation · Maldives</span>
+            <span>A Meckvy product · Maldives</span>
           </nav>
         </div>
       </footer>

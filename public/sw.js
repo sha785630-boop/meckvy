@@ -59,7 +59,7 @@ self.addEventListener("push", (event) => {
 
   if (data.app === "meckvy") {
     event.waitUntil(
-      self.registration.showNotification(data.title || "Meckvy", {
+      self.registration.showNotification(data.title || "DirectStay", {
         body: data.body || "New guest message",
         icon: "/app-icon/192",
         badge: "/app-icon/96",

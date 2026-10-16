@@ -3,8 +3,8 @@ import type { MetadataRoute } from "next";
 export default function manifest(): MetadataRoute.Manifest {
   return {
     id: "/dashboard",
-    name: "Meckvy — Guesthouse inbox",
-    short_name: "Meckvy",
+    name: "DirectStay by Meckvy",
+    short_name: "DirectStay",
     description:
       "Guest enquiries, your booking page and replies in any language — in your pocket.",
     start_url: "/dashboard",

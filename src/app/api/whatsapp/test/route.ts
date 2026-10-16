@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     const to = body.to?.trim();
     const text =
       body.text?.trim() ||
-      "Meckvy test: your WhatsApp Business number is connected.";
+      "DirectStay test: your WhatsApp Business number is connected.";
 
     if (!to) {
       return NextResponse.json(

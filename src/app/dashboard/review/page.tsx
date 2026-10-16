@@ -64,7 +64,7 @@ export default function ReviewPage() {
           Leave a review
         </h1>
         <p className="mt-1 text-ink-soft">
-          How is Meckvy working for your guesthouse? Your honest review helps
+          How is DirectStay working for your guesthouse? Your honest review helps
           other owners on the islands decide.
         </p>
       </header>
@@ -83,7 +83,7 @@ export default function ReviewPage() {
             Shukuriyya! 🌴
           </p>
           <p className="mt-2 text-sm text-ink-soft">
-            Your review is live on the Meckvy reviews page.
+            Your review is live on the DirectStay reviews page.
           </p>
           <div className="mt-5 flex flex-wrap justify-center gap-2">
             <Link
@@ -147,7 +147,7 @@ export default function ReviewPage() {
               rows={5}
               value={body}
               onChange={(e) => setBody(e.target.value)}
-              placeholder="What changed since you started using Meckvy?"
+              placeholder="What changed since you started using DirectStay?"
               className="mt-1.5 w-full rounded-xl border border-line bg-white px-3 py-2.5 text-ink outline-none ring-lagoon focus:ring-2"
             />
           </label>

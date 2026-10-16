@@ -82,7 +82,7 @@ const PLATFORMS: Platform[] = [
 ];
 
 const SHARE_PLACES = [
-  { title: "Instagram", detail: "Edit profile → Links → add your Meckvy link." },
+  { title: "Instagram", detail: "Edit profile → Links → add your DirectStay link." },
   { title: "Facebook page", detail: "Edit page info → Website, or add a “Contact us” button with your link." },
   { title: "Google Maps", detail: "In your Google Business Profile, paste the link as your Website." },
   { title: "WhatsApp Business", detail: "Business profile → Website → paste your link." },
@@ -124,7 +124,7 @@ export function ConnectWebsite({
   const helperMessage = useMemo(
     () =>
       [
-        `Hi! Please add our Meckvy guest-message button to the ${guesthouseName} website.`,
+        `Hi! Please add our DirectStay guest-message button to the ${guesthouseName} website.`,
         "",
         "Paste this code just before </body> on every page:",
         scriptCode,
@@ -145,7 +145,7 @@ export function ConnectWebsite({
           Easiest · no website needed · 1 minute
         </p>
         <h2 className="mt-1 text-xl font-semibold text-ink">
-          1. Share your Meckvy page
+          1. Share your DirectStay page
         </h2>
         <p className="mt-2 text-sm text-ink-soft">
           This is your own booking page. Anyone who opens it can check
@@ -189,7 +189,7 @@ export function ConnectWebsite({
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={qr}
-                alt="QR code for your Meckvy page"
+                alt="QR code for your DirectStay page"
                 className="h-44 w-44 rounded-xl border border-line bg-white p-2"
               />
             ) : (
@@ -303,7 +303,7 @@ export function ConnectWebsite({
           </a>
           <a
             href={`mailto:?subject=${encodeURIComponent(
-              `Add Meckvy to the ${guesthouseName} website`,
+              `Add DirectStay to the ${guesthouseName} website`,
             )}&body=${encodeURIComponent(helperMessage)}`}
             className="btn-lift rounded-full border border-line px-5 py-2.5 text-sm font-medium text-ink hover:bg-sand"
           >

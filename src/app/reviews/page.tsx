@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BrandLockup } from "@/components/BrandLockup";
 import { ReviewCard, Stars } from "@/components/ReviewCard";
 import { listPublicReviews } from "@/lib/reviews";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Reviews — Meckvy",
-  description: "What Maldivian guesthouse owners say about Meckvy.",
+  title: "Reviews — DirectStay by Meckvy",
+  description: "What Maldivian guesthouse owners say about DirectStay.",
 };
 
 export default async function ReviewsPage() {
@@ -20,12 +21,7 @@ export default async function ReviewsPage() {
   return (
     <main className="sand-glow min-h-screen">
       <header className="flex items-center justify-between border-b border-line/70 bg-foam/75 px-6 py-5 backdrop-blur-md md:px-10">
-        <Link
-          href="/"
-          className="font-[family-name:var(--font-display)] text-xl font-semibold text-lagoon-deep"
-        >
-          Meckvy
-        </Link>
+        <BrandLockup href="/" size="sm" />
         <div className="flex items-center gap-4 text-sm font-medium">
           <Link href="/pricing" className="text-ink-soft hover:text-ink">
             Pricing
@@ -67,7 +63,7 @@ export default async function ReviewsPage() {
         ) : (
           <div className="animate-fade-up-delay-2 mt-10 max-w-xl rounded-2xl border border-line bg-foam p-8">
             <p className="text-lg text-ink">
-              Meckvy just launched — the first reviews from island guesthouses
+              DirectStay just launched — the first reviews from island guesthouses
               are on their way.
             </p>
             <p className="mt-3 text-ink-soft">
@@ -84,8 +80,8 @@ export default async function ReviewsPage() {
         )}
 
         <p className="mt-12 text-sm text-ink-soft">
-          Reviews are written by guesthouses using Meckvy, from inside their
-          account. Using Meckvy?{" "}
+          Reviews are written by guesthouses using DirectStay, from inside their
+          account. Using DirectStay?{" "}
           <Link href="/dashboard/review" className="text-lagoon-deep underline">
             Leave your review
           </Link>

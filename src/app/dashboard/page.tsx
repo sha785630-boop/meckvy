@@ -50,7 +50,7 @@ export default async function DashboardPage() {
     {
       done: true,
       title: "Create your account",
-      detail: "Done — welcome to Meckvy.",
+      detail: "Done — welcome to DirectStay.",
       href: null,
       cta: null,
     },
@@ -64,7 +64,7 @@ export default async function DashboardPage() {
     },
     {
       done: hasRealEnquiry,
-      title: "Put Meckvy where guests can find you",
+      title: "Put DirectStay where guests can find you",
       detail:
         "Share your link or QR on Instagram, Facebook and Google Maps — or add the chat button to your website. No developer needed.",
       href: "/dashboard/connect",
@@ -73,7 +73,7 @@ export default async function DashboardPage() {
     {
       done: hasRealEnquiry,
       title: "Receive your first guest enquiry",
-      detail: "Open your own Meckvy page and send a test message to see it arrive.",
+      detail: "Open your own DirectStay page and send a test message to see it arrive.",
       href: "/dashboard/connect",
       cta: "Send a test",
     },
@@ -94,7 +94,7 @@ export default async function DashboardPage() {
     {
       done: Boolean(review),
       title: "Leave a review",
-      detail: "Help other guesthouses discover Meckvy.",
+      detail: "Help other guesthouses discover DirectStay.",
       href: "/dashboard/review",
       cta: "Write a review",
     },
@@ -237,7 +237,7 @@ export default async function DashboardPage() {
             <span className="font-semibold text-ink">
               {billing.daysLeft} day{billing.daysLeft === 1 ? "" : "s"} left in your free trial.
             </span>{" "}
-            Keep Meckvy from MVR 450/month — pay by BML transfer, no card needed.
+            Keep DirectStay from MVR 450/month — pay by BML transfer, no card needed.
           </p>
           <Link
             href="/dashboard/billing"

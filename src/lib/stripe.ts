@@ -8,12 +8,12 @@ export const PLAN_PRICES: Record<
   { name: string; amountUsd: number; description: string }
 > = {
   starter: {
-    name: "Meckvy Starter",
+    name: "DirectStay Starter",
     amountUsd: 29,
     description: "Website widget + inbox + translation",
   },
   pro: {
-    name: "Meckvy Pro",
+    name: "DirectStay Pro",
     amountUsd: 59,
     description: "Widget + email + automations",
   },

@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     keys: { p256dh: sub.keys.p256dh, auth: sub.keys.auth },
   });
   const sent = await notifyOwner(session.guesthouseId, {
-    title: "🔔 Meckvy alerts are on",
+    title: "🔔 DirectStay alerts are on",
     body: "You’ll get a ding like this for every new guest enquiry.",
     url: "/dashboard",
   });

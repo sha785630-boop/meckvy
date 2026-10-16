@@ -69,12 +69,12 @@ export default function GetTheAppPage() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/app-icon/192"
-            alt="Meckvy app icon"
+            alt="DirectStay app icon"
             className="animate-float-y h-20 w-20 rounded-[1.4rem] shadow-xl shadow-ink/30"
           />
           <div className="min-w-0 flex-1">
             <h1 className="font-[family-name:var(--font-display)] text-3xl font-semibold md:text-4xl">
-              Meckvy on your phone
+              DirectStay on your phone
             </h1>
             <p className="mt-2 max-w-xl text-foam/85">
               One tap to open your inbox, and a ding the moment a guest sends an
@@ -86,9 +86,9 @@ export default function GetTheAppPage() {
 
       <div className="grid gap-6 lg:grid-cols-[1fr_17rem]">
         <div className="space-y-5">
-          <Step n={1} done={env.standalone} title="Add Meckvy to your home screen">
+          <Step n={1} done={env.standalone} title="Add DirectStay to your home screen">
             {env.standalone ? (
-              <p>You’re using the Meckvy app. 🎉</p>
+              <p>You’re using the DirectStay app. 🎉</p>
             ) : env.canPrompt ? (
               <div className="space-y-3">
                 <p>Installs in seconds — no app store, always up to date.</p>
@@ -97,7 +97,7 @@ export default function GetTheAppPage() {
                   onClick={() => void promptInstall()}
                   className="btn-lift rounded-full bg-lagoon px-6 py-3 text-sm font-semibold text-foam hover:bg-lagoon-deep"
                 >
-                  📲 Install Meckvy
+                  📲 Install DirectStay
                 </button>
               </div>
             ) : env.ios ? (
@@ -144,12 +144,12 @@ export default function GetTheAppPage() {
               <p>This browser can’t show notifications — try Chrome on Android or the installed app on iPhone.</p>
             ) : iosNeedsInstall ? (
               <p>
-                On iPhone, alerts work once Meckvy is on your home screen. Finish step 1,
-                open Meckvy from the new icon, then come back here.
+                On iPhone, alerts work once DirectStay is on your home screen. Finish step 1,
+                open DirectStay from the new icon, then come back here.
               </p>
             ) : (
               <div className="space-y-3">
-                <p>Get a notification for every new guest message — even when Meckvy is closed.</p>
+                <p>Get a notification for every new guest message — even when DirectStay is closed.</p>
                 <button
                   type="button"
                   disabled={busy}
@@ -178,7 +178,7 @@ export default function GetTheAppPage() {
           <p className="mt-1 text-xs text-ink-soft">Scan with your phone camera</p>
           {qr ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={qr} alt="QR code to open Meckvy on your phone" className="mx-auto mt-4 w-48 rounded-xl" />
+            <img src={qr} alt="QR code to open DirectStay on your phone" className="mx-auto mt-4 w-48 rounded-xl" />
           ) : (
             <div className="mx-auto mt-4 h-48 w-48 animate-pulse rounded-xl bg-sand" />
           )}

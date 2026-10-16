@@ -21,9 +21,9 @@ export async function POST(request: Request) {
     const to = body.to?.trim();
     const text =
       body.text?.trim() ||
-      "Assalamu alaikum — Meckvy email is connected to your guesthouse.";
+      "Assalamu alaikum — DirectStay email is connected to your guesthouse.";
     const subject =
-      body.subject?.trim() || `${session.guesthouseName} — Meckvy test`;
+      body.subject?.trim() || `${session.guesthouseName} — DirectStay test`;
 
     if (!to) {
       return NextResponse.json(

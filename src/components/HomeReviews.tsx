@@ -24,7 +24,7 @@ export function HomeReviews() {
           Loved on the islands
         </p>
         <h2 className="mt-3 font-[family-name:var(--font-display)] text-3xl font-semibold text-ink md:text-5xl">
-          Owners using Meckvy
+          Owners using DirectStay
         </h2>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           {reviews.slice(0, 3).map((r) => (

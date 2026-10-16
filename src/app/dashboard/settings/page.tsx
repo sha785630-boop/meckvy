@@ -42,12 +42,12 @@ export default function SettingsPage() {
   const [origin, setOrigin] = useState("");
   const [testTo, setTestTo] = useState("");
   const [testText, setTestText] = useState(
-    "Assalamu alaikum — Meckvy WhatsApp is connected to your guesthouse.",
+    "Assalamu alaikum — DirectStay WhatsApp is connected to your guesthouse.",
   );
   const [emailTo, setEmailTo] = useState("");
-  const [emailSubject, setEmailSubject] = useState("Meckvy email test");
+  const [emailSubject, setEmailSubject] = useState("DirectStay email test");
   const [emailText, setEmailText] = useState(
-    "Assalamu alaikum — Meckvy email is connected to your guesthouse.",
+    "Assalamu alaikum — DirectStay email is connected to your guesthouse.",
   );
   const [busy, setBusy] = useState(false);
   const [emailBusy, setEmailBusy] = useState(false);
@@ -337,7 +337,7 @@ export default function SettingsPage() {
               <span className="font-medium text-ink">1. Your guesthouse WhatsApp (Business)</span>
               <br />
               You do <em>not</em> paste the normal phone like{" "}
-              <code className="text-xs">+960 7xx xxxx</code> into Meckvy.
+              <code className="text-xs">+960 7xx xxxx</code> into DirectStay.
               Meta gives you a long{" "}
               <span className="font-medium text-ink">Phone number ID</span> (digits
               only, looks like <code className="text-xs">1098…</code>). That goes in{" "}
@@ -380,7 +380,7 @@ export default function SettingsPage() {
             <code className="rounded bg-sand px-1.5 py-0.5 text-xs">
               .env.local
             </code>{" "}
-            in the Meckvy folder and paste the values (see box below), then restart{" "}
+            in the Meckvy project folder and paste the values (see box below), then restart{" "}
             <code className="text-xs">npm run dev</code>.
           </li>
           <li>

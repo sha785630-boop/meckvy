@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { BrandLockup } from "@/components/BrandLockup";
 import { CONTACT_EMAIL, CONTACT_PHONE } from "@/lib/site";
 
 export function LegalPage({
@@ -14,12 +15,7 @@ export function LegalPage({
   return (
     <main className="sand-glow min-h-screen">
       <header className="flex items-center justify-between border-b border-line/70 bg-foam/75 px-6 py-5 backdrop-blur-md md:px-10">
-        <Link
-          href="/"
-          className="font-[family-name:var(--font-display)] text-xl font-semibold text-lagoon-deep"
-        >
-          Meckvy
-        </Link>
+        <BrandLockup href="/" size="sm" />
         <Link href="/pricing" className="text-sm font-medium text-ink-soft hover:text-ink">
           Pricing
         </Link>

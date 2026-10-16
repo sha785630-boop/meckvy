@@ -9,7 +9,7 @@ export function isEmailConfigured(): boolean {
 export function getEmailFrom(): string {
   return (
     process.env.EMAIL_FROM?.trim() ||
-    "Meckvy Guesthouse <onboarding@resend.dev>"
+    "DirectStay <onboarding@resend.dev>"
   );
 }
 

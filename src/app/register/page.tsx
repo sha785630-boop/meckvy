@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
+import { BrandLockup } from "@/components/BrandLockup";
 
 function RegisterForm() {
   const router = useRouter();
@@ -123,12 +124,7 @@ export default function RegisterPage() {
   return (
     <main className="min-h-screen bg-sand">
       <header className="flex items-center justify-between border-b border-line bg-foam px-6 py-5">
-        <Link
-          href="/"
-          className="font-[family-name:var(--font-display)] text-xl font-semibold text-lagoon-deep"
-        >
-          Meckvy
-        </Link>
+        <BrandLockup href="/" size="sm" />
         <Link href="/login" className="text-sm font-medium text-ink-soft">
           Sign in
         </Link>

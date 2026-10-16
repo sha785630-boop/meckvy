@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BrandLockup } from "@/components/BrandLockup";
 import { DashboardNav } from "@/components/DashboardNav";
 import { LogoutButton } from "@/components/LogoutButton";
 import { isAdminEmail } from "@/lib/admin";
@@ -22,7 +23,7 @@ export default async function DashboardLayout({
     billing?.kind === "due"
       ? {
           tone: "bg-coral text-foam",
-          text: "Your free trial has ended — guest messages still arrive, but renew to keep using Meckvy.",
+          text: "Your free trial has ended — guest messages still arrive, but renew to keep using DirectStay.",
           cta: "Renew now",
         }
       : billing && billing.kind !== "demo" && billing.daysLeft <= 3
@@ -40,12 +41,7 @@ export default async function DashboardLayout({
     <div className="sand-glow flex min-h-screen flex-col bg-sand md:flex-row">
       <aside className="sticky top-0 z-20 flex flex-col border-b border-line/80 bg-foam/90 backdrop-blur-md md:h-screen md:w-60 md:border-b-0 md:border-r">
         <div className="flex items-center justify-between px-5 py-4 md:py-5">
-          <Link
-            href="/"
-            className="font-[family-name:var(--font-display)] text-xl font-semibold text-lagoon-deep"
-          >
-            Meckvy
-          </Link>
+          <BrandLockup href="/" size="sm" />
           <div className="md:hidden">
             <LogoutButton />
           </div>

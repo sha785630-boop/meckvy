@@ -306,8 +306,9 @@ export default async function GuesthousePage({ params, searchParams }: Props) {
             )}
           </div>
           <Link href="/" className="hover:text-ink">
-            Free booking page by <strong className="text-lagoon-deep">Meckvy</strong> — get
-            yours
+            Free booking page by{" "}
+            <strong className="text-lagoon-deep">DirectStay</strong>{" "}
+            <span className="text-ink-soft">(Meckvy)</span> — get yours
           </Link>
         </div>
       </footer>

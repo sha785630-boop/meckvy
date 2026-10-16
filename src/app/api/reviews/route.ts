@@ -50,7 +50,7 @@ export async function POST(request: Request) {
 
   if (!authorName || !text || text.length < 10) {
     return NextResponse.json(
-      { error: "Add your name and at least a sentence about Meckvy." },
+      { error: "Add your name and at least a sentence about DirectStay." },
       { status: 400 },
     );
   }

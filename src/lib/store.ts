@@ -134,7 +134,7 @@ export async function appendOutboundNote(
     id: `out-${Date.now()}`,
     guesthouseId,
     channel,
-    guestName: "You (Meckvy)",
+    guestName: "You (DirectStay)",
     guestContact: contact,
     subject: related?.subject ? `Re: ${related.subject}` : null,
     body: note,

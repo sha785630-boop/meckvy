@@ -100,7 +100,7 @@ export async function enableEnquiryAlerts(): Promise<{ ok: boolean; message: str
   if (permission !== "granted") {
     return {
       ok: false,
-      message: "Notifications are blocked — allow them in your phone settings for Meckvy.",
+      message: "Notifications are blocked — allow them in your phone settings for DirectStay.",
     };
   }
   const reg = await navigator.serviceWorker.register("/sw.js");

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Outfit } from "next/font/google";
 import { AppRuntime } from "@/components/AppRuntime";
+import { BRAND } from "@/lib/brand";
 import "./globals.css";
 
 const display = Fraunces({
@@ -15,19 +16,17 @@ const body = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Meckvy — Guesthouse automation for the Maldives",
-  description:
-    "Save hours every day. Meckvy turns website guest inquiries into one inbox for Maldivian guesthouses — with instant guest-language translation.",
+  title: `${BRAND.product} — Guesthouse inbox by ${BRAND.company}`,
+  description: BRAND.description,
   openGraph: {
-    title: "Meckvy — Guesthouse automation for the Maldives",
-    description:
-      "Website widget + inbox for Maldivian guesthouses, with translation.",
-    images: [{ url: "/redhan.jpeg", width: 1200, height: 630, alt: "Meckvy" }],
+    title: `${BRAND.product} by ${BRAND.company}`,
+    description: BRAND.description,
+    images: [{ url: "/redhan.jpeg", width: 1200, height: 630, alt: BRAND.product }],
   },
-  applicationName: "Meckvy",
+  applicationName: BRAND.product,
   appleWebApp: {
     capable: true,
-    title: "Meckvy",
+    title: BRAND.product,
     statusBarStyle: "default",
   },
 };

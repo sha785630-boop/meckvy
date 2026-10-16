@@ -2,20 +2,20 @@ import type { Metadata } from "next";
 import { LegalPage } from "@/components/LegalPage";
 
 export const metadata: Metadata = {
-  title: "Terms of Service — Meckvy",
+  title: "Terms of Service — DirectStay by Meckvy",
 };
 
 export default function TermsPage() {
   return (
     <LegalPage title="Terms of Service" updated="25 September 2026">
       <p>
-        These terms apply when you create a Meckvy account or subscribe to a
-        paid plan. By using Meckvy you agree to them.
+        These terms apply when you create a DirectStay account or subscribe to a
+        paid plan. By using DirectStay you agree to them.
       </p>
 
       <h2>The service</h2>
       <p>
-        Meckvy provides a website enquiry widget, a shared inbox, reply
+        DirectStay (a Meckvy product) provides a website enquiry widget, a shared inbox, reply
         templates, translation, and automations for guesthouses. Features may
         improve or change over time.
       </p>
@@ -34,7 +34,7 @@ export default function TermsPage() {
       <ul>
         <li>Keep your login private and your account details accurate.</li>
         <li>Only message guests who contacted you or agreed to hear from you.</li>
-        <li>Don’t use Meckvy for spam, fraud, or anything illegal.</li>
+        <li>Don’t use DirectStay for spam, fraud, or anything illegal.</li>
       </ul>
 
       <h2>Translations</h2>
@@ -45,7 +45,7 @@ export default function TermsPage() {
 
       <h2>Availability</h2>
       <p>
-        We work to keep Meckvy running but can’t guarantee it will always be
+        We work to keep DirectStay running but can’t guarantee it will always be
         available or error-free. We aren’t liable for lost bookings or indirect
         losses, and our total liability is limited to what you paid us in the
         previous three months.

@@ -40,7 +40,7 @@ export async function POST(request: Request) {
       if (!done) return NextResponse.json({ error: "Payment not found" }, { status: 404 });
       await notifyOwner(done.guesthouseId, {
         title: "✅ Payment received — thank you!",
-        body: `Your Meckvy plan is active until ${fmt(done.paidUntil)}.`,
+        body: `Your DirectStay plan is active until ${fmt(done.paidUntil)}.`,
         url: "/dashboard/billing",
       });
       return NextResponse.json({ ok: true });
@@ -65,7 +65,7 @@ export async function POST(request: Request) {
       const done = await grantFreeDays(body.guesthouseId, days);
       if (!done) return NextResponse.json({ error: "Guesthouse not found" }, { status: 404 });
       await notifyOwner(body.guesthouseId, {
-        title: "🎁 You got free Meckvy time",
+        title: "🎁 You got free DirectStay time",
         body: `${days} free days were added to your account.`,
         url: "/dashboard/billing",
       });

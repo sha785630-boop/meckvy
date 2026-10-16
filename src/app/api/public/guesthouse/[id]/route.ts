@@ -125,7 +125,7 @@ export async function POST(
     const fullBody = [
       message,
       details.length ? `\n\n${details.join("\n")}` : "",
-      "\n\n— Sent from your Meckvy booking page",
+      "\n\n— Sent from your DirectStay booking page",
     ].join("");
 
     const inbound: GuestMessage = {

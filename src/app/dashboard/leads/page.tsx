@@ -158,7 +158,7 @@ export default function AdminPage() {
   if (forbidden) {
     return (
       <div className="mx-auto max-w-4xl rounded-2xl border border-line bg-foam px-5 py-8 text-sm text-ink-soft">
-        This page is only for the Meckvy owner.
+        This page is only for the Meckvy admin.
       </div>
     );
   }
