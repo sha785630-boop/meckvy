@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { ChangePassword } from "@/components/ChangePassword";
 
 type Status = {
   configured: boolean;
@@ -189,6 +190,8 @@ export default function SettingsPage() {
           Inbox. WhatsApp and email APIs are optional later.
         </p>
       </header>
+
+      <ChangePassword />
 
       {goLive && (
         <section className="mb-6 rounded-2xl border border-lagoon/30 bg-foam p-6">

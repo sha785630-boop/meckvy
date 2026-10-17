@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { desc } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { getAdminSession } from "@/lib/admin";
 import { billingState } from "@/lib/billing";
@@ -25,8 +25,10 @@ export async function GET() {
       trialEndsAt: schema.guesthouses.trialEndsAt,
       paidUntil: schema.guesthouses.paidUntil,
       createdAt: schema.guesthouses.createdAt,
+      ownerEmail: schema.users.email,
     })
     .from(schema.guesthouses)
+    .leftJoin(schema.users, eq(schema.users.id, schema.guesthouses.ownerUserId))
     .orderBy(desc(schema.guesthouses.createdAt));
   const accountsWithBilling = accounts.map((a) => ({ ...a, billing: billingState(a) }));
 

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { BrandLockup } from "@/components/BrandLockup";
+import { CONTACT_PHONE } from "@/lib/site";
 
 function LoginForm() {
   const router = useRouter();
@@ -75,6 +76,20 @@ function LoginForm() {
       )}
       <p className="mt-4 text-xs text-ink-soft">
         Demo: <code>demo@meckvy.mv</code> / <code>demo1234</code>
+      </p>
+      <p className="mt-2 text-xs text-ink-soft">
+        Forgot your password?{" "}
+        <a
+          href={`https://wa.me/${CONTACT_PHONE.replace(/\D/g, "")}?text=${encodeURIComponent(
+            `Hi, I forgot my DirectStay password. My login email is: ${email === "demo@meckvy.mv" ? "" : email}`,
+          )}`}
+          target="_blank"
+          rel="noreferrer"
+          className="font-medium text-lagoon-deep underline"
+        >
+          Message us on WhatsApp
+        </a>{" "}
+        and we’ll reset it.
       </p>
     </form>
   );

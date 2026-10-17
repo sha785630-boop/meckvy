@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { CopyButton } from "@/components/CopyButton";
 
 type Lead = {
   id: string;
@@ -22,8 +23,11 @@ type Account = {
   planStatus: string;
   referredBy: string | null;
   createdAt: string;
+  ownerEmail: string | null;
   billing: { kind: string; endsAt: string | null; daysLeft: number };
 };
+
+type ResetResult = { guesthouse: string; email: string; password: string };
 
 type Payment = {
   id: string;
@@ -99,6 +103,29 @@ export default function AdminPage() {
   const [bank, setBank] = useState<Bank | null>(null);
   const [bankSaved, setBankSaved] = useState(false);
   const [busyId, setBusyId] = useState("");
+  const [resetResult, setResetResult] = useState<ResetResult | null>(null);
+
+  async function resetPassword(a: Account) {
+    if (!confirm(`Reset the password for ${a.name}${a.ownerEmail ? ` (${a.ownerEmail})` : ""}? Their old password will stop working.`)) {
+      return;
+    }
+    setBusyId(`pw-${a.id}`);
+    try {
+      const res = await fetch("/api/admin/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "reset-password", guesthouseId: a.id }),
+      });
+      const data = (await res.json()) as { ok?: boolean; email?: string; password?: string; error?: string };
+      if (!res.ok || !data.password || !data.email) {
+        alert(data.error ?? "Could not reset the password");
+        return;
+      }
+      setResetResult({ guesthouse: a.name, email: data.email, password: data.password });
+    } finally {
+      setBusyId("");
+    }
+  }
 
   const apply = useCallback((data: AdminData) => {
     if (!data) {
@@ -334,13 +361,53 @@ export default function AdminPage() {
         </h2>
         <p className="mt-1 text-sm text-ink-soft">
           Referral reward: both the new guesthouse and the one who invited them
-          get one free month on their invoice.
+          get one free month on their invoice. Forgot password? Tap 🔑 to make a
+          temporary one and send it to the owner.
         </p>
+        {resetResult && (
+          <div className="mt-4 rounded-2xl border border-emerald-300 bg-emerald-50 p-5" role="status">
+            <div className="flex flex-wrap items-start justify-between gap-2">
+              <p className="text-sm font-semibold text-ink">
+                New password for {resetResult.guesthouse}
+              </p>
+              <button
+                type="button"
+                onClick={() => setResetResult(null)}
+                className="text-xs text-ink-soft hover:text-ink"
+              >
+                Close
+              </button>
+            </div>
+            <p className="mt-2 text-sm text-ink-soft">
+              Email: <span className="font-medium text-ink">{resetResult.email}</span>
+            </p>
+            <p className="mt-1 font-mono text-2xl font-semibold tracking-wide text-ink">
+              {resetResult.password}
+            </p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <CopyButton text={resetResult.password} label="Copy password" />
+              <a
+                href={`https://wa.me/?text=${encodeURIComponent(
+                  `Your DirectStay login:\nEmail: ${resetResult.email}\nTemporary password: ${resetResult.password}\n\nSign in at ${window.location.origin}/login and change it in Settings.`,
+                )}`}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-lift rounded-full bg-[#25D366] px-4 py-2 text-sm font-semibold text-white hover:brightness-95"
+              >
+                Send on WhatsApp
+              </a>
+            </div>
+            <p className="mt-3 text-xs text-ink-soft">
+              This is shown only once. Ask them to change it in Settings after signing in.
+            </p>
+          </div>
+        )}
         <ul className="mt-4 divide-y divide-line overflow-hidden rounded-2xl border border-line bg-foam">
           {accounts.map((a) => (
             <li key={a.id} className="flex flex-wrap items-center gap-x-3 gap-y-1 px-5 py-3 text-sm">
               <span className="font-semibold text-ink">{a.name}</span>
               <span className="text-ink-soft">{a.island}</span>
+              {a.ownerEmail && <span className="text-xs text-ink-soft">{a.ownerEmail}</span>}
               <span
                 className={`rounded-full px-2 py-0.5 text-xs capitalize ${BILLING_BADGE[a.billing.kind] ?? ""}`}
               >
@@ -378,6 +445,17 @@ export default function AdminPage() {
                   className="rounded-full border border-line px-2.5 py-0.5 text-xs text-lagoon-deep hover:bg-sand disabled:opacity-50"
                 >
                   🎁 +30 days
+                </button>
+              )}
+              {a.billing.kind !== "demo" && (
+                <button
+                  type="button"
+                  disabled={busyId === `pw-${a.id}`}
+                  title="Make a temporary password for this owner"
+                  onClick={() => void resetPassword(a)}
+                  className="rounded-full border border-line px-2.5 py-0.5 text-xs text-ink-soft hover:bg-sand disabled:opacity-50"
+                >
+                  🔑 Reset password
                 </button>
               )}
             </li>
